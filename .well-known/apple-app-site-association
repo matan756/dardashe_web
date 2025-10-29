@@ -1,0 +1,27 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "HTA4SNFU2L.com.dardashe.mobile",
+        "paths": [
+          "/auth/*",
+          "/login",
+          "/signup-confirmed",
+          "/signup_confirmed.html",
+          "/reset-password/*"
+        ]
+      },
+      {
+        "appID": "HTA4SNFU2L.com.dardashe.mobile.dev",
+        "paths": [
+          "/auth/*",
+          "/login",
+          "/signup-confirmed",
+          "/signup_confirmed.html",
+          "/reset-password/*"
+        ]
+      }
+    ]
+  }
+}
