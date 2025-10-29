@@ -1,0 +1,22 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.dardashe.mobile",
+      "sha256_cert_fingerprints": [
+        "REPLACE_WITH_PLAY_APP_SIGNING_SHA256"
+      ]
+    }
+  },
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.dardashe.mobile.dev",
+      "sha256_cert_fingerprints": [
+        "CE:AE:04:5B:8E:7B:A9:B0:D7:D7:36:B6:73:7B:68:19:BC:22:00:3B:CA:82:89:48:B6:A6:C5:90:55:54:E1:95"
+      ]
+    }
+  }
+]
