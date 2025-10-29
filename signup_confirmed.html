@@ -144,7 +144,7 @@
 
       <section class="hero" aria-label="פעולה לאחר אימות הרשמה">
         <button class="primary-button" id="openAppBtn">מעבר לעמוד ההתחברות</button>
-        <p id="webMsg" class="web-msg">יש לפתוח את האפליקציה ממכשיר הטלפון על מנת להתחבר</p>
+        <p id="webMsg" class="web-msg">יש לפתוח את האפליקציה מהטלפון על מנת להתחבר</p>
       </section>
     </main>
   </div>
@@ -161,16 +161,17 @@
     // Basic mobile detection
     const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-    // If not mobile, show guidance message immediately
     if (!isMobile) {
+      // Hide button entirely on web
+      openBtn.style.display = 'none';
+      // Show guidance message instead
       webMsg.style.display = 'block';
+    } else {
+      // On mobile, enable deep linking
+      openBtn.addEventListener('click', () => {
+        window.location.href = deepLinkUrl;
+      });
     }
-
-    // On click: open app on mobile; on desktop: keep showing the message
-    openBtn.addEventListener('click', () => {
-      if (!isMobile) return;
-      window.location.href = deepLinkUrl;
-    });
   </script>
 </body>
 </html>
