@@ -102,7 +102,7 @@
             justify-items: center;
         }
 
-        .primary-button {
+       .primary-button {
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -116,7 +116,9 @@
             transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, border-color 0.15s ease;
             box-shadow: 0 8px 22px hsl(var(--primary) / 0.25);
             cursor: pointer;
-            font-size: 18px;
+            font-family: var(--font-body);            /* same font as the title */
+            font-size: clamp(20px, 4.2vw, 24px);      /* larger, responsive text */
+            line-height: 1.15;
             font-weight: 800;
             width: 100%;
             max-width: 520px;
