@@ -1,201 +1,178 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    />
-    <title>ההרשמה הושלמה בהצלחה - דרדשה</title>
-    <style>
-      :root {
-        --background: 0 0% 100%;
-        --foreground: 0 0% 0%;
-        --card: 0 0% 100%;
-        --card-foreground: 0 0% 0%;
-        --primary: 196 100% 30%;
-        --primary-foreground: 0 0% 100%;
-        --ring: 196 100% 30%;
-        --surface-gradient-start: 194 73% 65%;
-        --surface-gradient-end: 194 73% 90%;
-        --font-body: "Rubik", system-ui, -apple-system, "Segoe UI",
-          "Helvetica Neue", Arial, sans-serif;
-      }
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests; block-all-mixed-content">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>איפוס סיסמה - דרדשה</title>
 
-      html,
-      body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        background: linear-gradient(
-          to bottom,
-          hsl(var(--surface-gradient-start)),
-          hsl(var(--surface-gradient-end))
-        );
-        color: hsl(var(--foreground));
-        font-family: var(--font-body);
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-      }
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;800&display=swap" rel="stylesheet">
 
-      .page {
-        height: 100%;
-        display: grid;
-        place-items: center;
-        padding: 24px;
-        box-sizing: border-box;
-      }
+  <style>
+    :root {
+      --background: 0 0% 100%;
+      --foreground: 0 0% 0%;
+      --card: 0 0% 100%;
+      --card-foreground: 0 0% 0%;
+      --primary: 196 100% 30%;
+      --primary-foreground: 0 0% 100%;
+      --ring: 196 100% 30%;
+      --surface-gradient-start: 194 73% 65%;
+      --surface-gradient-end: 194 73% 90%;
+      --font-body: "Rubik", system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: linear-gradient(to bottom, hsl(var(--surface-gradient-start)), hsl(var(--surface-gradient-end)));
+      color: hsl(var(--foreground));
+      font-family: var(--font-body);
+    }
+    .page { height: 100%; display: grid; place-items: center; padding: 24px; box-sizing: border-box; }
+    .container {
+      width: 100%; max-width: 420px; background: hsl(var(--card)); color: hsl(var(--card-foreground));
+      border-radius: 20px; padding: 28px;
+      box-shadow: 0 0 0 2px hsl(var(--primary)), 0 10px 30px hsl(var(--primary) / 0.08);
+      text-align: right;
+    }
+    .header { text-align: center; margin-bottom: 20px; }
+    .logo img { width: 120px; height: auto; margin-bottom: 12px; }
+    h1 { font-size: 26px; font-weight: 800; margin: 0; color: hsl(var(--ring)); }
+    form { display: grid; gap: 12px; margin-top: 20px; }
+    input {
+      padding: 14px; font-size: 18px; border-radius: 12px; border: 1px solid #cfd6e4; width: 100%;
+      box-sizing: border-box; font-family: var(--font-body);
+    }
+    .primary-button {
+      padding: 16px; border-radius: 16px; background: hsl(var(--primary) / 0.96); color: hsl(var(--primary-foreground));
+      font-size: 20px; font-weight: 800; border: 1px solid hsl(var(--primary) / 0.35); cursor: pointer; transition: .2s; width: 100%;
+    }
+    .primary-button:hover { transform: translateY(-1px); box-shadow: 0 10px 20px hsl(var(--primary) / 0.32); }
+    #status { text-align: center; font-size: 18px; margin-top: 10px; font-weight: 500; }
+    #error { color: red; font-size: 16px; margin-top: 8px; text-align: center; }
+    .hidden { display: none; }
+    #webMsg { color: #6b7280; font-size: 14px; text-align: center; display: none; margin-top: 6px; }
+  </style>
+</head>
 
-      .container {
-        width: 100%;
-        max-width: 960px;
-        background: hsl(var(--card));
-        color: hsl(var(--card-foreground));
-        border-radius: 20px;
-        padding: 28px;
-        box-shadow: 0 0 0 2px hsl(var(--primary)),
-          0 10px 30px hsl(var(--primary) / 0.08);
-      }
-
-      .header {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        gap: 10px;
-        margin-bottom: 24px;
-      }
-
-      .logo {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-
-      .logo img {
-        height: clamp(140px, 24vw, 240px);
-        width: auto;
-        object-fit: contain;
-      }
-
-      .title {
-        margin: 8px 0 0 0;
-        font-size: clamp(30px, 5.4vw, 48px);
-        line-height: 1.15;
-        color: hsl(var(--ring));
-      }
-
-      .hero {
-        display: grid;
-        gap: 22px;
-        margin-top: 22px;
-        justify-items: center;
-      }
-
-      .primary-button {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        padding: 16px 22px;
-        border-radius: 16px;
-        background: hsl(var(--primary) / 0.96);
-        color: hsl(var(--primary-foreground));
-        user-select: none;
-        border: 1px solid hsl(var(--primary) / 0.35);
-        transition: transform 0.15s ease, box-shadow 0.15s ease,
-          background 0.15s ease, border-color 0.15s ease;
-        box-shadow: 0 8px 22px hsl(var(--primary) / 0.25);
-        cursor: pointer;
-        font-family: var(--font-body);
-        font-size: clamp(26px, 6.2vw, 34px);
-        line-height: 1.15;
-        font-weight: 800;
-        width: 100%;
-        max-width: 520px;
-        text-align: center;
-      }
-
-      .primary-button:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 10px 28px hsl(var(--primary) / 0.32);
-        background: hsl(var(--primary) / 0.98);
-        border-color: hsl(var(--primary) / 0.45);
-      }
-
-      .primary-button:active {
-        transform: translateY(0);
-        box-shadow: 0 6px 16px hsl(var(--primary) / 0.2);
-        background: hsl(var(--primary) / 0.94);
-        border-color: hsl(var(--primary) / 0.4);
-      }
-
-      .web-msg {
-        color: #6b7280;
-        font-size: 16px;
-        text-align: center;
-        display: none;
-      }
-
-      @media (max-width: 520px) {
-        .container {
-          padding: 20px;
-          border-radius: 16px;
-        }
-
-        .primary-button {
-          width: 100%;
-        }
-      }
-    </style>
-  </head>
-
-  <body>
-    <div class="page">
-      <main class="container" role="main">
-        <header class="header">
-          <div class="logo">
-            <img
-              src="https://dardashe.co.il/app_logo.png"
-              alt="לוגו דרדשה"
-            />
-          </div>
-          <h1 class="title">הרשמתך אומתה בהצלחה!</h1>
-        </header>
-
-        <section class="hero" aria-label="פעולה לאחר אימות הרשמה">
-          <button class="primary-button" id="openAppBtn">
-            מעבר לעמוד ההתחברות
-          </button>
-          <p id="webMsg" class="web-msg">
-            יש לפתוח את האפליקציה מהטלפון על מנת להתחבר
-          </p>
-        </section>
-      </main>
+<body>
+<div class="page">
+  <main class="container">
+    <div class="header">
+      <div class="logo">
+        <img src="https://dardashe.co.il/app_logo.png" alt="לוגו דרדשה" />
+      </div>
+      <h1>איפוס סיסמה</h1>
     </div>
 
-    <script>
-      // Resolve target scheme (dev/prod)
-      const urlParams = new URLSearchParams(window.location.search);
-      const scheme = urlParams.get("scheme") || "dardashe";
-      const deepLinkUrl = `${scheme}://login`;
-      const openBtn = document.getElementById("openAppBtn");
-      const webMsg = document.getElementById("webMsg");
+    <div id="status"></div>
+    <div id="error"></div>
 
-      // Basic mobile detection
-      const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    <form id="form">
+      <input id="password" type="password" placeholder="סיסמה חדשה" required />
+      <input id="confirm" type="password" placeholder="אשר סיסמה" required />
+      <button type="submit" class="primary-button">שמירת סיסמה</button>
+    </form>
 
-      // If not mobile, show guidance message immediately
-      if (!isMobile) {
+    <button id="backToLoginBtn" class="primary-button hidden">מעבר לעמוד ההתחברות</button>
+    <a id="deepLinkAnchor" href="#" class="hidden" aria-hidden="true">open</a>
+
+    <p id="webMsg">יש לפתוח את האפליקציה מהטלפון על מנת להתחבר</p>
+  </main>
+</div>
+
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = "https://auth.dardashe.co.il";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndxZ253Y2x1b2Rtd3N6Z2p0b25hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM3NzkwMTUsImV4cCI6MjA1OTM1NTAxNX0.IHAdNJNTOvymdlrn9ZpS50US46HgiKkn6r6j7otOTDs";
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  const $ = (id) => document.getElementById(id);
+  const statusEl = $("status");
+  const errorEl = $("error");
+  const formEl = $("form");
+  const passEl = $("password");
+  const confirmEl = $("confirm");
+  const backBtn = $("backToLoginBtn");
+  const webMsg = $("webMsg");
+  const deepLinkAnchor = $("deepLinkAnchor");
+
+  const params = new URLSearchParams(window.location.search);
+  const scheme = params.get("scheme") || "dardashe";
+  const deepLinkUrl = `${scheme}://login`;
+  deepLinkAnchor.href = deepLinkUrl;
+
+  const ua = navigator.userAgent || "";
+  const isAndroid = /Android/i.test(ua);
+  const isIOS = /iPhone|iPad|iPod/i.test(ua);
+  const isMobile = isAndroid || isIOS;
+  const isInApp = /FBAN|FBAV|Instagram|Twitter|Line|TikTok|GSA|Gmail|wv/i.test(ua);
+
+  if (!isMobile) webMsg.style.display = "block";
+
+  formEl.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    errorEl.textContent = "";
+    statusEl.textContent = "מעדכן סיסמה...";
+
+    if (passEl.value !== confirmEl.value) {
+      errorEl.textContent = "הסיסמאות לא תואמות";
+      return;
+    }
+
+    const { error } = await supabase.auth.updateUser({ password: passEl.value });
+    if (error) {
+      let msg = (error.message || "").toString();
+      const lower = msg.toLowerCase();
+      if (lower.includes("same") || lower.includes("previous") || lower.includes("old")) {
+        msg = "הסיסמה שהזנת זהה לסיסמה הקודמת";
+      }
+      errorEl.textContent = msg;
+      statusEl.textContent = "";
+      return;
+    }
+
+    statusEl.textContent = "הסיסמה עודכנה בהצלחה";
+    formEl.style.display = "none";
+    backBtn.classList.remove("hidden");
+
+    await supabase.auth.signOut();
+    // Keep ?scheme= in URL so the button knows which app to open
+    history.replaceState(null, "", location.pathname + location.search);
+  });
+
+  function openApp() {
+    // Simple guidance for in-app browsers
+    if (isInApp) {
+      webMsg.textContent = "אם האפליקציה לא נפתחת, פתחו קישור זה בדפדפן המכשיר ואז לחצו על הכפתור.";
+    }
+
+    const start = Date.now();
+
+    if (isAndroid) {
+      const pkg = scheme.endsWith("-dev") ? "com.dardashe.mobile.dev" : "com.dardashe.mobile";
+      const intentUrl =
+        `intent://login#Intent;scheme=${scheme};package=${pkg};` +
+        `S.browser_fallback_url=${encodeURIComponent("https://dardashe.co.il")};end`;
+      window.location.href = intentUrl;
+    } else {
+      // iOS prefers a real anchor click on user gesture
+      deepLinkAnchor.click();
+    }
+
+    setTimeout(() => {
+      if (Date.now() - start < 1500) {
         webMsg.style.display = "block";
       }
+    }, 900);
+  }
 
-      // On click: open app on mobile; on desktop: keep showing the message
-      openBtn.addEventListener("click", () => {
-        if (!isMobile) return;
-        window.location.href = deepLinkUrl;
-      });
-    </script>
-  </body>
+  backBtn.addEventListener("click", () => {
+    if (!isMobile) { webMsg.style.display = "block"; return; }
+    openApp();
+  });
+</script>
+</body>
 </html>
