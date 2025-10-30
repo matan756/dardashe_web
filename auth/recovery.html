@@ -1,174 +1,4 @@
-<!doctype html>
-<html lang="he" dir="rtl">
-<head>
-  <meta charset="utf-8" />
-  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests; block-all-mixed-content">
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>איפוס סיסמה - דרדשה</title>
-
-  <!-- Rubik font -->
-  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --background: 0 0% 100%;
-      --foreground: 0 0% 0%;
-      --card: 0 0% 100%;
-      --card-foreground: 0 0% 0%;
-      --primary: 196 100% 30%;
-      --primary-foreground: 0 0% 100%;
-      --ring: 196 100% 30%;
-      --surface-gradient-start: 194 73% 65%;
-      --surface-gradient-end: 194 73% 90%;
-      --font-body: "Rubik", system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-    }
-
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      background: linear-gradient(to bottom, hsl(var(--surface-gradient-start)), hsl(var(--surface-gradient-end)));
-      font-family: var(--font-body);
-      color: hsl(var(--foreground));
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-
-    .page {
-      height: 100%;
-      display: grid;
-      place-items: center;
-      padding: 24px;
-      box-sizing: border-box;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 420px;
-      background: hsl(var(--card));
-      padding: 32px 28px;
-      border-radius: 20px;
-      text-align: center;
-      box-shadow:
-        0 0 0 2px hsl(var(--primary)),
-        0 10px 30px hsl(var(--primary) / 0.1);
-      color: hsl(var(--card-foreground));
-    }
-
-    .logo {
-      height: 110px;
-      width: auto;
-      object-fit: contain;
-      margin-bottom: 12px;
-    }
-
-    h1 {
-      margin: 8px 0 12px;
-      font-size: 26px;
-      font-weight: 800;
-      color: hsl(var(--ring));
-    }
-
-    p {
-      margin: 6px 0;
-      font-size: 15px;
-      color: #444;
-    }
-
-    .field { margin-top: 16px; text-align: right; }
-    .input-wrap { position: relative; }
-
-    input[type="password"], input[type="text"] {
-      width: 100%;
-      padding: 12px 44px 12px 12px;
-      border-radius: 12px;
-      border: 1px solid #e3e6ea;
-      font-size: 16px;
-      font-family: var(--font-body);
-      box-sizing: border-box;
-      background: #fff;
-      text-align: right;
-    }
-
-    .toggle {
-      position:absolute;
-      top: 11px;
-      right: 12px;
-      cursor:pointer;
-      font-size: 20px;
-      opacity: .7;
-    }
-
-    .btn {
-      width: 100%;
-      margin-top: 22px;
-      padding: 14px;
-      font-size: 18px;
-      background: hsl(var(--primary));
-      color: hsl(var(--primary-foreground));
-      border-radius: 14px;
-      border: none;
-      font-weight: 700;
-      cursor:pointer;
-      transition: 0.15s ease;
-    }
-
-    .btn:hover { transform: translateY(-1px); }
-    .btn:active { transform: translateY(0); opacity: .9; }
-    .btn:disabled { opacity: 0.6; cursor:not-allowed; }
-
-    .error { color:#d70000; margin-top:8px; font-size:14px; }
-    .info { color:#028a48; margin-top:8px; font-size:14px; }
-
-    .muted {
-      margin-top: 16px;
-      font-size: 12px;
-      opacity: 0.7;
-      line-height: 1.4;
-    }
-
-    .hidden { display:none; }
-  </style>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-</head>
-
-<body>
-<div class="page">
-  <main class="container">
-    <img class="logo" src="https://dardashe.co.il/app_logo.png" alt="דרדשה" />
-    <h1>איפוס סיסמה</h1>
-
-    <p id="status" class="info">מזהים את ההפעלה…</p>
-
-    <div id="form" class="hidden">
-      <div class="field">
-        <div class="input-wrap">
-          <input id="password" type="password" placeholder="סיסמה חדשה" autocomplete="new-password" />
-          <span class="toggle" id="toggle1">👁️</span>
-        </div>
-      </div>
-
-      <div class="field">
-        <div class="input-wrap">
-          <input id="confirm" type="password" placeholder="אימות סיסמה חדשה" autocomplete="new-password" />
-          <span class="toggle" id="toggle2">👁️</span>
-        </div>
-      </div>
-
-      <div id="error" class="error hidden"></div>
-      <div id="info" class="info hidden"></div>
-
-      <button id="submit" class="btn">עדכון סיסמה</button>
-    </div>
-
-    <p class="muted">אם נתקלתם בבעיה, נסו לפתוח שוב מהאימייל או לרענן דף זה.</p>
-  </main>
-</div>
-
 <script>
-  // Set your values
   const SUPABASE_URL = "https://auth.dardashe.co.il";
   const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndxZ253Y2x1b2Rtd3N6Z2p0b25hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM3NzkwMTUsImV4cCI6MjA1OTM1NTAxNX0.IHAdNJNTOvymdlrn9ZpS50US46HgiKkn6r6j7otOTDs";
 
@@ -221,7 +51,6 @@
   toggle1.onclick = () => toggleInput(passEl, toggle1);
   toggle2.onclick = () => toggleInput(confirmEl, toggle2);
 
-  // Bootstrap: establish session from URL and show form
   (async () => {
     try {
       const params = parseParams();
@@ -241,7 +70,6 @@
         return;
       }
 
-      // Remove code/tokens from the URL to prevent reuse/refresh accidents
       stripSecretsFromUrl();
 
       setStatus("הכל מוכן, ניתן לעדכן סיסמה.");
@@ -252,7 +80,6 @@
     }
   })();
 
-  // Submit with one-time guard and sign-out after success
   submitEl.onclick = async () => {
     clearError(); clearInfo();
 
@@ -270,15 +97,28 @@
 
     try {
       const { error } = await supabase.auth.updateUser({ password: p });
-      if (error) throw error;
+      if (error) {
+        // ✅ catch same password error & show Hebrew message
+        if (
+          error.message.includes("same") ||
+          error.message.includes("old password") ||
+          error.message.includes("different")
+        ) {
+          throw new Error("הסיסמה שהזנת זהה לסיסמה הקודמת");
+        }
+        throw error;
+      }
 
       didUpdate = true;
 
       try { await supabase.auth.signOut(); } catch {}
 
-      setInfo("✅ הסיסמה עודכנה בהצלחה. ניתן לסגור חלון זה.");
+      setInfo("✅ הסיסמה עודכנה בהצלחה");
       setStatus("");
       hide(formEl);
+
+      // ✅ Hide bottom message after success
+      document.querySelector(".muted").textContent = "";
     } catch (e) {
       console.error(e);
       setError(e?.message || "אירעה שגיאה. נסו שוב.");
@@ -289,5 +129,3 @@
     }
   };
 </script>
-</body>
-</html>
