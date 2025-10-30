@@ -88,6 +88,7 @@
       font-family: var(--font-body);
       box-sizing: border-box;
       background: #fff;
+      text-align: right;
     }
 
     .toggle {
@@ -167,8 +168,9 @@
 </div>
 
 <script>
+  // Set your values
   const SUPABASE_URL = "https://auth.dardashe.co.il";
-  const SUPABASE_ANON_KEY = "YOUR_ANON_KEY_HERE"; // <-- replace
+  const SUPABASE_ANON_KEY = "YOUR_ANON_KEY_HERE"; // replace
 
   const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -183,13 +185,15 @@
   const toggle1 = $("toggle1");
   const toggle2 = $("toggle2");
 
+  let didUpdate = false;
+
   function show(el) { el.classList.remove("hidden"); }
   function hide(el) { el.classList.add("hidden"); }
   function setStatus(msg) { statusEl.textContent = msg; }
   function setError(msg) { errorEl.textContent = msg; show(errorEl); }
-  function clearError(){ hide(errorEl); }
+  function clearError(){ errorEl.textContent = ""; hide(errorEl); }
   function setInfo(msg) { infoEl.textContent = msg; show(infoEl); }
-  function clearInfo(){ hide(infoEl); }
+  function clearInfo(){ infoEl.textContent = ""; hide(infoEl); }
 
   function parseParams() {
     const q = new URLSearchParams(location.search);
@@ -201,6 +205,13 @@
     };
   }
 
+  function stripSecretsFromUrl() {
+    const cleanUrl = location.origin + location.pathname;
+    if (cleanUrl !== location.href) {
+      history.replaceState(null, "", cleanUrl);
+    }
+  }
+
   function toggleInput(input, t) {
     const isPwd = input.type === "password";
     input.type = isPwd ? "text" : "password";
@@ -210,17 +221,28 @@
   toggle1.onclick = () => toggleInput(passEl, toggle1);
   toggle2.onclick = () => toggleInput(confirmEl, toggle2);
 
+  // Bootstrap: establish session from URL and show form
   (async () => {
     try {
       const params = parseParams();
 
-      if (params.code) await supabase.auth.exchangeCodeForSession(location.href);
-      else if (params.access_token && params.refresh_token) {
-        await supabase.auth.setSession(params);
+      if (params.code) {
+        await supabase.auth.exchangeCodeForSession(location.href);
+      } else if (params.access_token && params.refresh_token) {
+        await supabase.auth.setSession({
+          access_token: params.access_token,
+          refresh_token: params.refresh_token,
+        });
       }
 
       const { data: { session } } = await supabase.auth.getSession();
-      if (!session) return setStatus("לא נמצאו פרטי אימות. פתחו את הקישור מהאימייל שוב.");
+      if (!session) {
+        setStatus("לא נמצאו פרטי אימות. פתחו את הקישור מהאימייל שוב.");
+        return;
+      }
+
+      // Remove code/tokens from the URL to prevent reuse/refresh accidents
+      stripSecretsFromUrl();
 
       setStatus("הכל מוכן, ניתן לעדכן סיסמה.");
       show(formEl);
@@ -230,10 +252,16 @@
     }
   })();
 
+  // Submit with one-time guard and sign-out after success
   submitEl.onclick = async () => {
     clearError(); clearInfo();
 
-    const p = passEl.value.trim(), c = confirmEl.value.trim();
+    if (didUpdate) {
+      setError("כבר נעשה שימוש בקישור. פתחו קישור חדש מהאימייל אם צריך.");
+      return;
+    }
+
+    const p = (passEl.value || "").trim(), c = (confirmEl.value || "").trim();
     if (!p || !c) return setError("נא למלא את שני השדות.");
     if (p.length < 6) return setError("הסיסמה צריכה להכיל לפחות 6 תווים.");
     if (p !== c) return setError("הסיסמאות אינן תואמות.");
@@ -243,14 +271,21 @@
     try {
       const { error } = await supabase.auth.updateUser({ password: p });
       if (error) throw error;
-      setInfo("✅ הסיסמה עודכנה בהצלחה!");
+
+      didUpdate = true;
+
+      try { await supabase.auth.signOut(); } catch {}
+
+      setInfo("✅ הסיסמה עודכנה בהצלחה. ניתן לסגור חלון זה.");
       setStatus("");
-      passEl.value = confirmEl.value = "";
+      hide(formEl);
     } catch (e) {
       console.error(e);
-      setError(e.message || "אירעה שגיאה. נסו שוב.");
+      setError(e?.message || "אירעה שגיאה. נסו שוב.");
     } finally {
-      submitEl.disabled = false; submitEl.textContent = "עדכון סיסמה";
+      if (!didUpdate) {
+        submitEl.disabled = false; submitEl.textContent = "עדכון סיסמה";
+      }
     }
   };
 </script>
