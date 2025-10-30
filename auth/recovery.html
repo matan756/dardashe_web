@@ -11,84 +11,175 @@
       .logo { width:128px; height:128px; border-radius:64px; object-fit:cover; display:block; margin:0 auto 12px; }
       h1 { margin: 8px 0 16px; font-size:22px; font-weight:700; color:#0a2540; }
       p { margin: 8px 0; color:#444; }
-      .btn { display:inline-block; background:#10b27c; color:#fff; text-decoration:none; padding:12px 20px; border-radius:8px; font-weight:700; }
-      .btn:active { opacity:0.9; }
-      .muted { font-size:12px; color:#888; margin-top:16px; }
-      .status { margin:12px 0; color:#0a2540; }
+      .field { margin-top: 16px; }
+      .input-wrap { position:relative; }
+      input[type="password"], input[type="text"] {
+        width:100%; box-sizing:border-box; padding:12px 44px 12px 12px; border:1px solid #e5e7eb; border-radius:8px; font-size:16px; text-align:right; background:#ffffff;
+      }
+      .toggle {
+        position:absolute; top:10px; right:12px; width:24px; height:24px; cursor:pointer; color:#667085; display:flex; align-items:center; justify-content:center;
+      }
+      .btn {
+        display:block; width:100%; background:#10b27c; color:#fff; text-decoration:none; padding:12px 20px; border-radius:8px; font-weight:700; margin-top:24px; text-align:center; border:0; cursor:pointer;
+      }
+      .btn:disabled { opacity:0.6; cursor:not-allowed; }
+      .error { color:#dc2626; margin-top:8px; }
+      .info { color:#0a7; margin-top:8px; }
+      .muted { font-size:12px; color:#888; margin-top:16px; text-align:center; }
+      .hidden { display:none; }
       code { direction:ltr; unicode-bidi:plaintext; }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   </head>
   <body>
     <div class="container">
       <div class="center">
         <img class="logo" src="https://dardashe.co.il/app_logo.png" alt="דרדשה" />
         <h1>איפוס סיסמה</h1>
-        <p class="status" id="status">פותחים את האפליקציה…</p>
-        <a id="openApp" href="#" class="btn" style="display:none">פתחו את האפליקציה</a>
-        <p class="muted" id="fallback" style="display:none">
-          אם הכפתור לא עובד, העתיקו את הקישור:
-          <br />
-          <a id="rawLink" href="#"></a>
-        </p>
       </div>
+
+      <p id="status" class="info">מזהים את ההפעלה…</p>
+
+      <div id="form" class="hidden">
+        <div class="field">
+          <div class="input-wrap">
+            <input id="password" type="password" placeholder="סיסמה חדשה" autocomplete="new-password" />
+            <span class="toggle" id="toggle1" title="הצג/הסתר">👁️</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="input-wrap">
+            <input id="confirm" type="password" placeholder="אימות סיסמה חדשה" autocomplete="new-password" />
+            <span class="toggle" id="toggle2" title="הצג/הסתר">👁️</span>
+          </div>
+        </div>
+
+        <div id="error" class="error hidden"></div>
+        <div id="info" class="info hidden"></div>
+
+        <button id="submit" class="btn">עדכון סיסמה</button>
+      </div>
+
+      <p class="muted">
+        אם נתקלתם בבעיה, נסו לפתוח שוב מהאימייל או לרענן דף זה.
+      </p>
     </div>
 
     <script>
-      (function () {
-        function mask(t) {
-          if (!t) return "";
-          try { return t.slice(0, 6) + "..." + t.slice(-4); } catch { return "<masked>"; }
-        }
-        function getParams() {
-          const q = new URLSearchParams(location.search);
-          const h = new URLSearchParams((location.hash || "").replace(/^#/, ""));
-          return {
-            code: q.get("code") || h.get("code"),
-            access_token: q.get("access_token") || h.get("access_token"),
-            refresh_token: q.get("refresh_token") || h.get("refresh_token"),
-          };
-        }
-        function buildDeepLink(params) {
-          var target = "dardashe-dev://reset-password";
-          var qp = [];
-          if (params.code) qp.push("code=" + encodeURIComponent(params.code));
-          if (params.access_token && params.refresh_token) {
-            qp.push("access_token=" + encodeURIComponent(params.access_token));
-            qp.push("refresh_token=" + encodeURIComponent(params.refresh_token));
-          }
-          if (qp.length) target += "?" + qp.join("&");
-          return target;
-        }
-        function setStatus(msg) { var el = document.getElementById("status"); if (el) el.textContent = msg; }
+      // 1) SET THESE VALUES
+      const SUPABASE_URL = "REPLACE_WITH_YOUR_SUPABASE_URL";
+      const SUPABASE_ANON_KEY = "REPLACE_WITH_YOUR_SUPABASE_ANON_KEY";
 
+      // 2) Helpers
+      const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      const $ = (id) => document.getElementById(id);
+      const statusEl = $("status");
+      const formEl = $("form");
+      const errorEl = $("error");
+      const infoEl = $("info");
+      const passEl = $("password");
+      const confirmEl = $("confirm");
+      const submitEl = $("submit");
+      const toggle1 = $("toggle1");
+      const toggle2 = $("toggle2");
+
+      function show(el) { el.classList.remove("hidden"); }
+      function hide(el) { el.classList.add("hidden"); }
+      function setStatus(msg) { statusEl.textContent = msg; }
+      function setError(msg) { errorEl.textContent = msg; show(errorEl); }
+      function clearError() { errorEl.textContent = ""; hide(errorEl); }
+      function setInfo(msg) { infoEl.textContent = msg; show(infoEl); }
+      function clearInfo() { infoEl.textContent = ""; hide(infoEl); }
+
+      function parseParams() {
+        const q = new URLSearchParams(location.search);
+        const h = new URLSearchParams((location.hash || "").replace(/^#/, ""));
+        return {
+          code: q.get("code") || h.get("code"),
+          access_token: q.get("access_token") || h.get("access_token"),
+          refresh_token: q.get("refresh_token") || h.get("refresh_token"),
+        };
+      }
+
+      function toggleInputType(input, toggle) {
+        const isPwd = input.getAttribute("type") === "password";
+        input.setAttribute("type", isPwd ? "text" : "password");
+        toggle.textContent = isPwd ? "🙈" : "👁️";
+      }
+
+      toggle1.addEventListener("click", () => toggleInputType(passEl, toggle1));
+      toggle2.addEventListener("click", () => toggleInputType(confirmEl, toggle2));
+
+      // 3) Establish session from URL (recovery)
+      (async function bootstrap() {
         try {
-          var params = getParams();
-          var deepLink = buildDeepLink(params);
-
-          console.log("[RecoveryBridge] code=", mask(params.code),
-            " at=", mask(params.access_token), " rt=", mask(params.refresh_token),
-            " → ", deepLink);
-
-          // Update UI
-          var a = document.getElementById("openApp");
-          var raw = document.getElementById("rawLink");
-          var fb = document.getElementById("fallback");
-          if (a) { a.href = deepLink; a.style.display = "inline-block"; }
-          if (raw) { raw.href = deepLink; raw.textContent = deepLink; }
-          if (fb) { fb.style.display = "block"; }
-
-          if (params.code || (params.access_token && params.refresh_token)) {
-            setStatus("מזהים את ההפעלה… מעבירים לאפליקציה");
-            // Immediate redirect into the app with query params (no hash)
-            location.replace(deepLink);
-          } else {
-            setStatus("לא נמצאו פרמטרים לאימות. פתחו את הקישור מהאימייל שוב.");
+          const params = parseParams();
+          // Prefer code (PKCE). If not present, accept token pair.
+          if (params.code) {
+            await supabase.auth.exchangeCodeForSession(location.href);
+          } else if (params.access_token && params.refresh_token) {
+            await supabase.auth.setSession({
+              access_token: params.access_token,
+              refresh_token: params.refresh_token,
+            });
           }
+
+          const { data: { session } } = await supabase.auth.getSession();
+          if (!session) {
+            setStatus("לא נמצאו פרטי אימות. פתחו את הקישור מהאימייל שוב.");
+            return;
+          }
+
+          setStatus("הכל מוכן, ניתן לעדכן סיסמה.");
+          show(formEl);
         } catch (e) {
-          console.log("[RecoveryBridge] error", e);
-          setStatus("שגיאה בעיבוד הקישור. נסו שוב מהאימייל.");
+          console.error("[Recovery] bootstrap error", e);
+          setStatus("שגיאה בזיהוי. נסו לפתוח את הקישור שוב מהאימייל.");
         }
       })();
+
+      // 4) Submit handler
+      submitEl.addEventListener("click", async () => {
+        clearError();
+        clearInfo();
+
+        const p = (passEl.value || "").trim();
+        const c = (confirmEl.value || "").trim();
+
+        if (!p || !c) {
+          setError("נא למלא ולוודא סיסמה חדשה.");
+          return;
+        }
+        if (p.length < 6) {
+          setError("הסיסמה צריכה להכיל לפחות 6 תווים.");
+          return;
+        }
+        if (p !== c) {
+          setError("הסיסמאות אינן תואמות.");
+          return;
+        }
+
+        submitEl.disabled = true;
+        submitEl.textContent = "מעדכן...";
+
+        try {
+          const { error } = await supabase.auth.updateUser({ password: p });
+          if (error) throw error;
+          setInfo("הסיסמה עודכנה בהצלחה.");
+          setStatus("");
+          // Optional: clear fields
+          passEl.value = "";
+          confirmEl.value = "";
+        } catch (e) {
+          console.error("[Recovery] update error", e);
+          const msg = (e && e.message) ? e.message : "אירעה שגיאה בעדכון הסיסמה. נסו שוב.";
+          setError(msg);
+        } finally {
+          submitEl.disabled = false;
+          submitEl.textContent = "עדכון סיסמה";
+        }
+      });
     </script>
   </body>
 </html>
