@@ -225,8 +225,9 @@
   });
 
   backBtn.addEventListener("click", () => {
-    if (isMobile) window.location.href = deepLinkUrl;
-  });
+  if (!isMobile) return;
+  window.location.href = deepLinkUrl;
+});
 </script>
 </body>
 </html>
