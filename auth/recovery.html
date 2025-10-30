@@ -218,7 +218,7 @@
     backBtn.classList.remove("hidden");
 
     await supabase.auth.signOut();
-    history.replaceState(null, "", location.pathname); // remove tokens
+    history.replaceState(null, "", location.pathname + location.search);
   });
 
   function openApp() {
