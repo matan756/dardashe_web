@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>איפוס סיסמה</title>
+    <style>
+      body { margin:0; background:#f7f8fa; font-family:'Segoe UI', Arial, sans-serif; direction:rtl; text-align:right; color:#222; }
+      .container { max-width: 480px; background:#fff; margin:40px auto; padding:24px; border-radius:16px; box-shadow:0 4px 12px rgba(0,0,0,0.08); }
+      .center { text-align:center; }
+      .logo { width:128px; height:128px; border-radius:64px; object-fit:cover; display:block; margin:0 auto 12px; }
+      h1 { margin: 8px 0 16px; font-size:22px; font-weight:700; color:#0a2540; }
+      p { margin: 8px 0; color:#444; }
+      .btn { display:inline-block; background:#10b27c; color:#fff; text-decoration:none; padding:12px 20px; border-radius:8px; font-weight:700; }
+      .btn:active { opacity:0.9; }
+      .muted { font-size:12px; color:#888; margin-top:16px; }
+      .status { margin:12px 0; color:#0a2540; }
+      code { direction:ltr; unicode-bidi:plaintext; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="center">
+        <img class="logo" src="https://dardashe.co.il/app_logo.png" alt="דרדשה" />
+        <h1>איפוס סיסמה</h1>
+        <p class="status" id="status">פותחים את האפליקציה…</p>
+        <a id="openApp" href="#" class="btn" style="display:none">פתחו את האפליקציה</a>
+        <p class="muted" id="fallback" style="display:none">
+          אם הכפתור לא עובד, העתיקו את הקישור:
+          <br />
+          <a id="rawLink" href="#"></a>
+        </p>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        function mask(t) {
+          if (!t) return "";
+          try { return t.slice(0, 6) + "..." + t.slice(-4); } catch { return "<masked>"; }
+        }
+        function getParams() {
+          const q = new URLSearchParams(location.search);
+          const h = new URLSearchParams((location.hash || "").replace(/^#/, ""));
+          return {
+            code: q.get("code") || h.get("code"),
+            access_token: q.get("access_token") || h.get("access_token"),
+            refresh_token: q.get("refresh_token") || h.get("refresh_token"),
+          };
+        }
+        function buildDeepLink(params) {
+          var target = "dardashe-dev://reset-password";
+          var qp = [];
+          if (params.code) qp.push("code=" + encodeURIComponent(params.code));
+          if (params.access_token && params.refresh_token) {
+            qp.push("access_token=" + encodeURIComponent(params.access_token));
+            qp.push("refresh_token=" + encodeURIComponent(params.refresh_token));
+          }
+          if (qp.length) target += "?" + qp.join("&");
+          return target;
+        }
+        function setStatus(msg) { var el = document.getElementById("status"); if (el) el.textContent = msg; }
+
+        try {
+          var params = getParams();
+          var deepLink = buildDeepLink(params);
+
+          console.log("[RecoveryBridge] code=", mask(params.code),
+            " at=", mask(params.access_token), " rt=", mask(params.refresh_token),
+            " → ", deepLink);
+
+          // Update UI
+          var a = document.getElementById("openApp");
+          var raw = document.getElementById("rawLink");
+          var fb = document.getElementById("fallback");
+          if (a) { a.href = deepLink; a.style.display = "inline-block"; }
+          if (raw) { raw.href = deepLink; raw.textContent = deepLink; }
+          if (fb) { fb.style.display = "block"; }
+
+          if (params.code || (params.access_token && params.refresh_token)) {
+            setStatus("מזהים את ההפעלה… מעבירים לאפליקציה");
+            // Immediate redirect into the app with query params (no hash)
+            location.replace(deepLink);
+          } else {
+            setStatus("לא נמצאו פרמטרים לאימות. פתחו את הקישור מהאימייל שוב.");
+          }
+        } catch (e) {
+          console.log("[RecoveryBridge] error", e);
+          setStatus("שגיאה בעיבוד הקישור. נסו שוב מהאימייל.");
+        }
+      })();
+    </script>
+  </body>
+</html>
