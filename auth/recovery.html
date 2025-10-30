@@ -199,7 +199,18 @@
     const { error } = await supabase.auth.updateUser({ password: passEl.value });
 
     if (error) {
-      errorEl.textContent = error.message;
+      let msg = error.message;
+
+      // ✅ Translate specific Supabase error: same password
+      if (
+        msg.toLowerCase().includes("same") ||
+        msg.toLowerCase().includes("previous") ||
+        msg.toLowerCase().includes("old")
+      ) {
+        msg = "הסיסמה שהזנת זהה לסיסמה הקודמת";
+      }
+
+      errorEl.textContent = msg;
       statusEl.textContent = "";
       return;
     }
