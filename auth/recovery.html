@@ -1,185 +1,258 @@
 <!doctype html>
 <html lang="he" dir="rtl">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>איפוס סיסמה</title>
-    <style>
-      body { margin:0; background:#f7f8fa; font-family:'Segoe UI', Arial, sans-serif; direction:rtl; text-align:right; color:#222; }
-      .container { max-width: 480px; background:#fff; margin:40px auto; padding:24px; border-radius:16px; box-shadow:0 4px 12px rgba(0,0,0,0.08); }
-      .center { text-align:center; }
-      .logo { width:128px; height:128px; border-radius:64px; object-fit:cover; display:block; margin:0 auto 12px; }
-      h1 { margin: 8px 0 16px; font-size:22px; font-weight:700; color:#0a2540; }
-      p { margin: 8px 0; color:#444; }
-      .field { margin-top: 16px; }
-      .input-wrap { position:relative; }
-      input[type="password"], input[type="text"] {
-        width:100%; box-sizing:border-box; padding:12px 44px 12px 12px; border:1px solid #e5e7eb; border-radius:8px; font-size:16px; text-align:right; background:#ffffff;
-      }
-      .toggle {
-        position:absolute; top:10px; right:12px; width:24px; height:24px; cursor:pointer; color:#667085; display:flex; align-items:center; justify-content:center;
-      }
-      .btn {
-        display:block; width:100%; background:#10b27c; color:#fff; text-decoration:none; padding:12px 20px; border-radius:8px; font-weight:700; margin-top:24px; text-align:center; border:0; cursor:pointer;
-      }
-      .btn:disabled { opacity:0.6; cursor:not-allowed; }
-      .error { color:#dc2626; margin-top:8px; }
-      .info { color:#0a7; margin-top:8px; }
-      .muted { font-size:12px; color:#888; margin-top:16px; text-align:center; }
-      .hidden { display:none; }
-      code { direction:ltr; unicode-bidi:plaintext; }
-    </style>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  </head>
-  <body>
-    <div class="container">
-      <div class="center">
-        <img class="logo" src="https://dardashe.co.il/app_logo.png" alt="דרדשה" />
-        <h1>איפוס סיסמה</h1>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests; block-all-mixed-content">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>איפוס סיסמה - דרדשה</title>
+
+  <!-- Rubik font -->
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --background: 0 0% 100%;
+      --foreground: 0 0% 0%;
+      --card: 0 0% 100%;
+      --card-foreground: 0 0% 0%;
+      --primary: 196 100% 30%;
+      --primary-foreground: 0 0% 100%;
+      --ring: 196 100% 30%;
+      --surface-gradient-start: 194 73% 65%;
+      --surface-gradient-end: 194 73% 90%;
+      --font-body: "Rubik", system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: linear-gradient(to bottom, hsl(var(--surface-gradient-start)), hsl(var(--surface-gradient-end)));
+      font-family: var(--font-body);
+      color: hsl(var(--foreground));
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .page {
+      height: 100%;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      box-sizing: border-box;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 420px;
+      background: hsl(var(--card));
+      padding: 32px 28px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow:
+        0 0 0 2px hsl(var(--primary)),
+        0 10px 30px hsl(var(--primary) / 0.1);
+      color: hsl(var(--card-foreground));
+    }
+
+    .logo {
+      height: 110px;
+      width: auto;
+      object-fit: contain;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      margin: 8px 0 12px;
+      font-size: 26px;
+      font-weight: 800;
+      color: hsl(var(--ring));
+    }
+
+    p {
+      margin: 6px 0;
+      font-size: 15px;
+      color: #444;
+    }
+
+    .field { margin-top: 16px; text-align: right; }
+    .input-wrap { position: relative; }
+
+    input[type="password"], input[type="text"] {
+      width: 100%;
+      padding: 12px 44px 12px 12px;
+      border-radius: 12px;
+      border: 1px solid #e3e6ea;
+      font-size: 16px;
+      font-family: var(--font-body);
+      box-sizing: border-box;
+      background: #fff;
+    }
+
+    .toggle {
+      position:absolute;
+      top: 11px;
+      right: 12px;
+      cursor:pointer;
+      font-size: 20px;
+      opacity: .7;
+    }
+
+    .btn {
+      width: 100%;
+      margin-top: 22px;
+      padding: 14px;
+      font-size: 18px;
+      background: hsl(var(--primary));
+      color: hsl(var(--primary-foreground));
+      border-radius: 14px;
+      border: none;
+      font-weight: 700;
+      cursor:pointer;
+      transition: 0.15s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); opacity: .9; }
+    .btn:disabled { opacity: 0.6; cursor:not-allowed; }
+
+    .error { color:#d70000; margin-top:8px; font-size:14px; }
+    .info { color:#028a48; margin-top:8px; font-size:14px; }
+
+    .muted {
+      margin-top: 16px;
+      font-size: 12px;
+      opacity: 0.7;
+      line-height: 1.4;
+    }
+
+    .hidden { display:none; }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+<div class="page">
+  <main class="container">
+    <img class="logo" src="https://dardashe.co.il/app_logo.png" alt="דרדשה" />
+    <h1>איפוס סיסמה</h1>
+
+    <p id="status" class="info">מזהים את ההפעלה…</p>
+
+    <div id="form" class="hidden">
+      <div class="field">
+        <div class="input-wrap">
+          <input id="password" type="password" placeholder="סיסמה חדשה" autocomplete="new-password" />
+          <span class="toggle" id="toggle1">👁️</span>
+        </div>
       </div>
 
-      <p id="status" class="info">מזהים את ההפעלה…</p>
-
-      <div id="form" class="hidden">
-        <div class="field">
-          <div class="input-wrap">
-            <input id="password" type="password" placeholder="סיסמה חדשה" autocomplete="new-password" />
-            <span class="toggle" id="toggle1" title="הצג/הסתר">👁️</span>
-          </div>
+      <div class="field">
+        <div class="input-wrap">
+          <input id="confirm" type="password" placeholder="אימות סיסמה חדשה" autocomplete="new-password" />
+          <span class="toggle" id="toggle2">👁️</span>
         </div>
-
-        <div class="field">
-          <div class="input-wrap">
-            <input id="confirm" type="password" placeholder="אימות סיסמה חדשה" autocomplete="new-password" />
-            <span class="toggle" id="toggle2" title="הצג/הסתר">👁️</span>
-          </div>
-        </div>
-
-        <div id="error" class="error hidden"></div>
-        <div id="info" class="info hidden"></div>
-
-        <button id="submit" class="btn">עדכון סיסמה</button>
       </div>
 
-      <p class="muted">
-        אם נתקלתם בבעיה, נסו לפתוח שוב מהאימייל או לרענן דף זה.
-      </p>
+      <div id="error" class="error hidden"></div>
+      <div id="info" class="info hidden"></div>
+
+      <button id="submit" class="btn">עדכון סיסמה</button>
     </div>
 
-    <script>
-      // 1) SET THESE VALUES
-      const SUPABASE_URL = "https://auth.dardashe.co.il";
-      const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndxZ253Y2x1b2Rtd3N6Z2p0b25hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM3NzkwMTUsImV4cCI6MjA1OTM1NTAxNX0.IHAdNJNTOvymdlrn9ZpS50US46HgiKkn6r6j7otOTDs";
+    <p class="muted">אם נתקלתם בבעיה, נסו לפתוח שוב מהאימייל או לרענן דף זה.</p>
+  </main>
+</div>
 
-      // 2) Helpers
-      const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-      const $ = (id) => document.getElementById(id);
-      const statusEl = $("status");
-      const formEl = $("form");
-      const errorEl = $("error");
-      const infoEl = $("info");
-      const passEl = $("password");
-      const confirmEl = $("confirm");
-      const submitEl = $("submit");
-      const toggle1 = $("toggle1");
-      const toggle2 = $("toggle2");
+<script>
+  const SUPABASE_URL = "https://auth.dardashe.co.il";
+  const SUPABASE_ANON_KEY = "YOUR_ANON_KEY_HERE"; // <-- replace
 
-      function show(el) { el.classList.remove("hidden"); }
-      function hide(el) { el.classList.add("hidden"); }
-      function setStatus(msg) { statusEl.textContent = msg; }
-      function setError(msg) { errorEl.textContent = msg; show(errorEl); }
-      function clearError() { errorEl.textContent = ""; hide(errorEl); }
-      function setInfo(msg) { infoEl.textContent = msg; show(infoEl); }
-      function clearInfo() { infoEl.textContent = ""; hide(infoEl); }
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-      function parseParams() {
-        const q = new URLSearchParams(location.search);
-        const h = new URLSearchParams((location.hash || "").replace(/^#/, ""));
-        return {
-          code: q.get("code") || h.get("code"),
-          access_token: q.get("access_token") || h.get("access_token"),
-          refresh_token: q.get("refresh_token") || h.get("refresh_token"),
-        };
+  const $ = (id) => document.getElementById(id);
+  const statusEl = $("status");
+  const formEl = $("form");
+  const errorEl = $("error");
+  const infoEl = $("info");
+  const passEl = $("password");
+  const confirmEl = $("confirm");
+  const submitEl = $("submit");
+  const toggle1 = $("toggle1");
+  const toggle2 = $("toggle2");
+
+  function show(el) { el.classList.remove("hidden"); }
+  function hide(el) { el.classList.add("hidden"); }
+  function setStatus(msg) { statusEl.textContent = msg; }
+  function setError(msg) { errorEl.textContent = msg; show(errorEl); }
+  function clearError(){ hide(errorEl); }
+  function setInfo(msg) { infoEl.textContent = msg; show(infoEl); }
+  function clearInfo(){ hide(infoEl); }
+
+  function parseParams() {
+    const q = new URLSearchParams(location.search);
+    const h = new URLSearchParams((location.hash || "").replace(/^#/, ""));
+    return {
+      code: q.get("code") || h.get("code"),
+      access_token: q.get("access_token") || h.get("access_token"),
+      refresh_token: q.get("refresh_token") || h.get("refresh_token"),
+    };
+  }
+
+  function toggleInput(input, t) {
+    const isPwd = input.type === "password";
+    input.type = isPwd ? "text" : "password";
+    t.textContent = isPwd ? "🙈" : "👁️";
+  }
+
+  toggle1.onclick = () => toggleInput(passEl, toggle1);
+  toggle2.onclick = () => toggleInput(confirmEl, toggle2);
+
+  (async () => {
+    try {
+      const params = parseParams();
+
+      if (params.code) await supabase.auth.exchangeCodeForSession(location.href);
+      else if (params.access_token && params.refresh_token) {
+        await supabase.auth.setSession(params);
       }
 
-      function toggleInputType(input, toggle) {
-        const isPwd = input.getAttribute("type") === "password";
-        input.setAttribute("type", isPwd ? "text" : "password");
-        toggle.textContent = isPwd ? "🙈" : "👁️";
-      }
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return setStatus("לא נמצאו פרטי אימות. פתחו את הקישור מהאימייל שוב.");
 
-      toggle1.addEventListener("click", () => toggleInputType(passEl, toggle1));
-      toggle2.addEventListener("click", () => toggleInputType(confirmEl, toggle2));
+      setStatus("הכל מוכן, ניתן לעדכן סיסמה.");
+      show(formEl);
+    } catch (e) {
+      console.error(e);
+      setStatus("שגיאה בזיהוי. נסו שוב.");
+    }
+  })();
 
-      // 3) Establish session from URL (recovery)
-      (async function bootstrap() {
-        try {
-          const params = parseParams();
-          // Prefer code (PKCE). If not present, accept token pair.
-          if (params.code) {
-            await supabase.auth.exchangeCodeForSession(location.href);
-          } else if (params.access_token && params.refresh_token) {
-            await supabase.auth.setSession({
-              access_token: params.access_token,
-              refresh_token: params.refresh_token,
-            });
-          }
+  submitEl.onclick = async () => {
+    clearError(); clearInfo();
 
-          const { data: { session } } = await supabase.auth.getSession();
-          if (!session) {
-            setStatus("לא נמצאו פרטי אימות. פתחו את הקישור מהאימייל שוב.");
-            return;
-          }
+    const p = passEl.value.trim(), c = confirmEl.value.trim();
+    if (!p || !c) return setError("נא למלא את שני השדות.");
+    if (p.length < 6) return setError("הסיסמה צריכה להכיל לפחות 6 תווים.");
+    if (p !== c) return setError("הסיסמאות אינן תואמות.");
 
-          setStatus("הכל מוכן, ניתן לעדכן סיסמה.");
-          show(formEl);
-        } catch (e) {
-          console.error("[Recovery] bootstrap error", e);
-          setStatus("שגיאה בזיהוי. נסו לפתוח את הקישור שוב מהאימייל.");
-        }
-      })();
+    submitEl.disabled = true; submitEl.textContent = "מעדכן...";
 
-      // 4) Submit handler
-      submitEl.addEventListener("click", async () => {
-        clearError();
-        clearInfo();
-
-        const p = (passEl.value || "").trim();
-        const c = (confirmEl.value || "").trim();
-
-        if (!p || !c) {
-          setError("נא למלא ולוודא סיסמה חדשה.");
-          return;
-        }
-        if (p.length < 6) {
-          setError("הסיסמה צריכה להכיל לפחות 6 תווים.");
-          return;
-        }
-        if (p !== c) {
-          setError("הסיסמאות אינן תואמות.");
-          return;
-        }
-
-        submitEl.disabled = true;
-        submitEl.textContent = "מעדכן...";
-
-        try {
-          const { error } = await supabase.auth.updateUser({ password: p });
-          if (error) throw error;
-          setInfo("הסיסמה עודכנה בהצלחה.");
-          setStatus("");
-          // Optional: clear fields
-          passEl.value = "";
-          confirmEl.value = "";
-        } catch (e) {
-          console.error("[Recovery] update error", e);
-          const msg = (e && e.message) ? e.message : "אירעה שגיאה בעדכון הסיסמה. נסו שוב.";
-          setError(msg);
-        } finally {
-          submitEl.disabled = false;
-          submitEl.textContent = "עדכון סיסמה";
-        }
-      });
-    </script>
-  </body>
+    try {
+      const { error } = await supabase.auth.updateUser({ password: p });
+      if (error) throw error;
+      setInfo("✅ הסיסמה עודכנה בהצלחה!");
+      setStatus("");
+      passEl.value = confirmEl.value = "";
+    } catch (e) {
+      console.error(e);
+      setError(e.message || "אירעה שגיאה. נסו שוב.");
+    } finally {
+      submitEl.disabled = false; submitEl.textContent = "עדכון סיסמה";
+    }
+  };
+</script>
+</body>
 </html>
