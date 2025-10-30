@@ -223,7 +223,6 @@
 
   function openApp() {
     const isAndroid = /Android/i.test(navigator.userAgent);
-    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
     const pkg = scheme.endsWith("-dev")
       ? "com.dardashe.mobile.dev"
       : "com.dardashe.mobile";
@@ -236,7 +235,7 @@
         `S.browser_fallback_url=${encodeURIComponent("https://dardashe.co.il")};end`;
       window.location.href = intentUrl;
     } else {
-      window.location.href = deepLinkUrl;
+      window.location.href = `${scheme}://login`;
     }
 
     setTimeout(() => {
