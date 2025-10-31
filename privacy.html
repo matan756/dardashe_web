@@ -1,79 +1,167 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="he" dir="rtl">
 <head>
-<meta charset="utf-8">
-<title>מדיניות פרטיות - דרדשה</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-body {
-  font-family: system-ui, sans-serif;
-  max-width: 800px;
-  margin: auto;
-  padding: 20px;
-  line-height: 1.7;
-}
-h1, h2 {
-  font-weight: 700;
-}
-</style>
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests; block-all-mixed-content">
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>מדיניות פרטיות - דרדשה</title>
+
+  <style>
+    :root {
+      --background: 0 0% 100%;
+      --foreground: 0 0% 0%;
+      --card: 0 0% 100%;
+      --card-foreground: 0 0% 0%;
+      --popover: 0 0% 100%;
+      --popover-foreground: 0 0% 0%;
+      --primary: 196 100% 30%;
+      --primary-foreground: 0 0% 100%;
+      --secondary: 194 100% 94%;
+      --secondary-foreground: 0 0% 0%;
+      --accent: 203 12% 87%;
+      --accent-foreground: 0 0% 0%;
+      --ring: 196 100% 30%;
+      --font-body: "Rubik", system-ui, -apple-system, "Segoe UI", "Helvetica Neue", sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: linear-gradient(to bottom, hsl(194 73% 65%), hsl(194 73% 90%));
+      font-family: var(--font-body);
+      color: hsl(var(--foreground));
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .page {
+      padding: 24px;
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+      background: hsl(var(--card));
+      color: hsl(var(--card-foreground));
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow:
+        0 0 0 2px hsl(var(--primary)),
+        0 10px 30px hsl(var(--primary) / 0.08);
+      line-height: 1.75;
+      font-size: 18px;
+    }
+
+    h1 {
+      font-size: clamp(28px, 4.6vw, 42px);
+      margin-top: 0;
+      margin-bottom: 12px;
+      color: hsl(var(--ring));
+      text-align: center;
+      font-weight: 800;
+    }
+
+    h2 {
+      font-size: 22px;
+      margin-top: 28px;
+      margin-bottom: 12px;
+      color: hsl(var(--ring));
+      font-weight: 700;
+    }
+
+    p, li {
+      font-size: 18px;
+    }
+
+    ul {
+      padding-right: 20px;
+      margin: 10px 0;
+    }
+
+    a {
+      color: hsl(var(--primary));
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .date {
+      opacity: 0.75;
+      text-align: center;
+      margin-bottom: 24px;
+      font-size: 16px;
+    }
+  </style>
 </head>
 
 <body>
+<div class="page">
+  <main class="container">
+    
+    <h1>מדיניות פרטיות</h1>
+    <div class="date">עודכן לאחרונה: 31/10/2025</div>
 
-<h1>מדיניות פרטיות - דרדשה</h1>
-<p>עודכן לאחרונה: 31/10/2025</p>
+    <p>אנו ב<strong>דרדשה</strong> מכבדים את פרטיות המשתמשים שלנו ומתחייבים לשמור על המידע האישי שלהם. מסמך זה מפרט אילו נתונים נאספים, כיצד אנו משתמשים בהם, ומהן זכויות המשתמש.</p>
 
-<p>אנו ב<strong>דרדשה</strong> מכבדים את פרטיות המשתמשים שלנו ומתחייבים לשמור על המידע האישי שלהם. מסמך זה מפרט אילו נתונים נאספים, כיצד אנו משתמשים בהם, ומהן זכויות המשתמש</p>
+    <h2>איזה מידע אנו אוספים?</h2>
+    <ul>
+      <li><strong>כתובת אימייל</strong> — לצורך יצירת חשבון והתחברות.</li>
+      <li><strong>Push Token</strong> — לצורך שליחת תזכורות והתראות.</li>
+      <li>
+        <strong>נתוני שימוש אנונימיים</strong> — סטטיסטיקות שימוש באפליקציה (לדוגמה: שיעורים שהושלמו, תדירות שימוש, טעויות נפוצות).  
+        הנתונים אינם מזהים משתמשים ומשמשים לשיפור חוויית הלמידה ופיתוח פיצ’רים חדשים.
+      </li>
+    </ul>
 
-<h2>איזה מידע אנו אוספים?</h2>
-<ul>
-<li><strong>כתובת אימייל</strong> — לצורך יצירת חשבון והתחברות.</li>
-<li><strong>Push Token</strong> — לצורך שליחת תזכורות והתראות למשתמש.</li>
-<li><strong>נתוני שימוש אנונימיים</strong>אנו אוספים מידע סטטיסטי על אופן השימוש באפליקציה (לדוגמה: שיעורים שהושלמו, תדירות שימוש, טעויות נפוצות בתרגילים). מידע זה אינו כולל פרטים מזהים ואינו מאפשר לזהות את המשתמש.
-הנתונים משמשים אותנו לשיפור התוכן והחוויה, מדידת ביצועי האפליקציה, ופיתוח פיצ’רים חדשים</li>
-</ul>
+    <p><strong>איננו אוספים</strong>:</p>
+    <ul>
+      <li>קבצי אודיו מהמשתמש</li>
+      <li>נתוני מיקום</li>
+      <li>מידע בריאותי או פיננסי</li>
+      <li>מידע רגיש אחר</li>
+    </ul>
 
-<p>איננו אוספים:</p>
-<ul>
-<li>קבצי אודיו מהמשתמש</li>
-<li>נתוני מיקום</li>
-<li>מידע בריאותי או פיננסי</li>
-<li>מידע רגיש אחר</li>
-</ul>
+    <h2>כיצד אנו משתמשים במידע?</h2>
+    <ul>
+      <li>ניהול חשבון והתחברות</li>
+      <li>שליחת תזכורות ושימור רצף לימוד</li>
+      <li>שיפור ביצועי האפליקציה וחוויית המשתמש</li>
+    </ul>
 
-<h2>כיצד אנו משתמשים במידע?</h2>
-<p>המידע משמש עבור:</p>
-<ul>
-<li>ניהול חשבון והתחברות</li>
-<li>שליחת תזכורות על תרגול ושימור רצף (streak)</li>
-<li>הבנת השימוש באפליקציה ושיפור חוויית המשתמש</li>
-</ul>
+    <h2>שיתוף מידע</h2>
+    <p>איננו מוכרים מידע אישי לצד שלישי.</p>
+    <p>אנו משתמשים בשירותים כגון Supabase ו־Expo לצורך אימות, אחסון נתונים וניתוח שימוש. שירותים אלה פועלים בהתאם לתקני אבטחה ומדיניות פרטיות מחמירים.</p>
 
-<h2>שיתוף מידע</h2>
-<p>איננו מוכרים מידע אישי לצד שלישי</p>
-<p>אנו משתמשים בשירותי צד ג' כגון Supabase ו־Expo לצורך אימות משתמשים, אחסון נתונים וניתוח שימוש באפליקציה. שירותים אלו עשויים לעבד מידע בשמנו, לפי תקני האבטחה ומדיניויות הפרטיות שלהם.</p>
+    <h2>שמירת מידע</h2>
+    <p>המידע נשמר כל עוד החשבון פעיל.</p>
 
-<h2>שמירת מידע</h2>
-<p>המידע נשמר כל עוד החשבון פעיל.</p>
+    <h2>זכויות המשתמש</h2>
+    <p>המשתמש רשאי לבקש:</p>
+    <ul>
+      <li>גישה לנתונים שלו</li>
+      <li>תיקון פרטים</li>
+      <li>מחיקת חשבונו וכל המידע הקשור אליו</li>
+    </ul>
 
-<h2>זכויות המשתמש</h2>
-<p>המשתמש רשאי לבקש:</p>
-<ul>
-<li>גישה לנתוניו</li>
-<li>תיקון פרטיו האישיים</li>
-<li>מחיקת חשבונו ונתוניו</li>
-</ul>
+    <p>לבקשות: <a href="mailto:support@dardashe.co.il">support@dardashe.co.il</a></p>
 
-<p>לבקשות מסוג זה ניתן לפנות ל: <a href="mailto:support@dardashe.co.il">support@dardashe.co.il</a></p>
+    <h2>אבטחה</h2>
+    <p>נתונים מוגנים באמצעות הצפנה, בקרות גישה ותשתית מאובטחת בהתאם לסטנדרטים בינלאומיים.</p>
 
-<h2>אבטחה</h2>
-<p>הנתונים שלך מוגנים באמצעות הצפנה, בקרות גישה ונהלי אבטחה מתקדמים. אנו עובדים עם תשתיות מאובטחות העומדות בסטנדרטים בינלאומיים.</p>
+    <h2>שינויים במדיניות</h2>
+    <p>ייתכנו עדכונים למדיניות זו. במקרה של שינוי מהותי תפורסם הודעה.</p>
 
-<h2>שינויים במדיניות</h2>
-<p>אנו עשויים לעדכן מדיניות זו מעת לעת. נפרסם הודעה במקרה של שינוי מהותי.</p>
+    <h2>יצירת קשר</h2>
+    <p>לשאלות ופניות: <a href="mailto:support@dardashe.co.il">support@dardashe.co.il</a></p>
 
-<h2>יצירת קשר</h2>
-<p>לשאלות נוספות ניתן לפנות אלינו באימייל: <a href="mailto:support@dardashe.co.il">support@dardashe.co.il</a></p>
-
+  </main>
+</div>
 </body>
 </html>
