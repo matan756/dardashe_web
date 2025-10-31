@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests; block-all-mixed-content">
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>מחיקת חשבון - דרדשה</title>
+
+  <style>
+    :root {
+      --background: 0 0% 100%;
+      --foreground: 0 0% 0%;
+      --card: 0 0% 100%;
+      --card-foreground: 0 0% 0%;
+      --primary: 196 100% 30%;
+      --primary-foreground: 0 0% 100%;
+      --surface-gradient-start: 194 73% 65%;
+      --surface-gradient-end: 194 73% 90%;
+      --font-body: "Rubik", system-ui, -apple-system, "Segoe UI", "Helvetica Neue", sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: linear-gradient(to bottom, hsl(var(--surface-gradient-start)), hsl(var(--surface-gradient-end)));
+      font-family: var(--font-body);
+      color: hsl(var(--foreground));
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .page {
+      padding: 24px;
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+      background: hsl(var(--card));
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow:
+        0 0 0 2px hsl(var(--primary)),
+        0 10px 30px hsl(var(--primary) / 0.08);
+      line-height: 1.75;
+      font-size: 18px;
+    }
+
+    h1 {
+      font-size: clamp(28px, 4.6vw, 42px);
+      margin: 0 0 12px;
+      text-align: center;
+      font-weight: 800;
+      color: hsl(var(--primary));
+    }
+
+    p {
+      font-size: 18px;
+      margin-bottom: 14px;
+    }
+
+    a {
+      color: hsl(var(--primary));
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .info-box {
+      background: #E6F6FB;
+      border: 2px solid hsl(var(--primary));
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 12px;
+    }
+  </style>
+</head>
+
+<body>
+<div class="page">
+  <main class="container">
+
+    <h1>מחיקת חשבון</h1>
+
+    <p>אנו מכבדים את פרטיותך ומאפשרים לך למחוק את החשבון ואת כל הנתונים המשויכים אליו בכל שלב.</p>
+
+    <h2>מחיקה מתוך האפליקציה</h2>
+    <p>ניתן למחוק את החשבון ישירות מתוך האפליקציה:</p>
+
+    <div class="info-box">
+      ⚙️ <strong>הגדרות</strong> → <strong>מחיקת חשבון</strong>
+    </div>
+
+    <p>בסיום המחיקה תנותק/י מהאפליקציה והנתונים יימחקו ממערכותינו.</p>
+
+    <h2>אין לך גישה לאפליקציה?</h2>
+    <p>אם אינך יכול/ה להיכנס לאפליקציה, ניתן לבקש מחיקה ידנית:</p>
+    <p>📧 שלחו בקשה ל־ <a href="mailto:support@dardashe.co.il">support@dardashe.co.il</a></p>
+
+    <p>זמן הטיפול בבקשה: עד 14 ימי עסקים.</p>
+
+  </main>
+</div>
+</body>
+</html>
