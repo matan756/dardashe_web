@@ -4,7 +4,8 @@
   <meta charset="utf-8" />
   <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests; block-all-mixed-content">
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>דרדשה - ערבית מדוברת</title>
+  <title>מדיניות פרטיות - דרדשה</title>
+
   <style>
     :root {
       --background: 0 0% 100%;
@@ -13,188 +14,154 @@
       --card-foreground: 0 0% 0%;
       --popover: 0 0% 100%;
       --popover-foreground: 0 0% 0%;
-      --primary: 196 100% 30%;           /* dark app blue */
-      --primary-foreground: 0 0% 100%;    /* white */
+      --primary: 196 100% 30%;
+      --primary-foreground: 0 0% 100%;
       --secondary: 194 100% 94%;
       --secondary-foreground: 0 0% 0%;
-      --muted: 0 0% 0%;
-      --muted-foreground: 196 100% 30%;
       --accent: 203 12% 87%;
       --accent-foreground: 0 0% 0%;
-      --destructive: 0 84.2% 60.2%;
-      --destructive-foreground: 0 0% 100%;
-      --green: 142 70% 40%;
-      --green-foreground: 0 0% 100%;
-      --border: 0 0% 100%;
-      --input: 0 0% 0%;
       --ring: 196 100% 30%;
-      --ring_light: 240 4.9% 83.9%;
-      --gray: 203 12% 87%;
-      --surface: 194 73% 80%;
-      --surface-2: 194 100% 94%;
-      --surface-gradient-start: 194 73% 65%;
-      --surface-gradient-end: 194 73% 90%;
-      --font-body: "Rubik", system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      --font-body: "Rubik", system-ui, -apple-system, "Segoe UI", "Helvetica Neue", sans-serif;
     }
 
     html, body {
       height: 100%;
       margin: 0;
-      padding: 0;
-      overflow: hidden; /* unscrollable */
-      background: linear-gradient(to bottom, hsl(var(--surface-gradient-start)), hsl(var(--surface-gradient-end)));
-      color: hsl(var(--foreground));
+      background: linear-gradient(to bottom, hsl(194 73% 65%), hsl(194 73% 90%));
       font-family: var(--font-body);
+      color: hsl(var(--foreground));
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
 
     .page {
-      height: 100%;
+      padding: 24px;
       display: grid;
       place-items: center;
-      padding: 24px;
+      min-height: 100vh;
       box-sizing: border-box;
     }
 
     .container {
       width: 100%;
-      max-width: 960px;
+      max-width: 900px;
       background: hsl(var(--card));
       color: hsl(var(--card-foreground));
       border-radius: 20px;
-      padding: 28px;
+      padding: 32px;
       box-shadow:
-        0 0 0 2px hsl(var(--primary)),             /* dark-blue contour */
+        0 0 0 2px hsl(var(--primary)),
         0 10px 30px hsl(var(--primary) / 0.08);
+      line-height: 1.75;
+      font-size: 18px;
     }
 
-    .header {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      gap: 10px;
-      margin-bottom: 24px;
-    }
-
-    .logo {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .logo img {
-      height: clamp(140px, 24vw, 240px);
-      width: auto;
-      object-fit: contain;
-    }
-
-    .title {
-      margin: 8px 0 0 0;
-      font-size: clamp(30px, 5.4vw, 48px);
-      line-height: 1.15;
+    h1 {
+      font-size: clamp(28px, 4.6vw, 42px);
+      margin-top: 0;
+      margin-bottom: 12px;
       color: hsl(var(--ring));
+      text-align: center;
+      font-weight: 800;
     }
 
-    .hero {
-      display: grid;
-      gap: 22px;
-      margin-top: 22px;
+    h2 {
+      font-size: 22px;
+      margin-top: 28px;
+      margin-bottom: 12px;
+      color: hsl(var(--ring));
+      font-weight: 700;
     }
 
-    .store-badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      justify-content: center;
+    p, li {
+      font-size: 18px;
     }
 
-    /* Subcomponents now use dark app blue instead of black */
-    .store-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      padding: 16px 22px;
-      border-radius: 16px;
-      background: hsl(var(--primary) / 0.96);
-      color: hsl(var(--primary-foreground));
-      user-select: none;
-      border: 1px solid hsl(var(--primary) / 0.35);
-      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, border-color 0.15s ease;
-      box-shadow: 0 8px 22px hsl(var(--primary) / 0.25);
-      cursor: default; /* UI only */
-    }
-    .store-badge:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 10px 28px hsl(var(--primary) / 0.32);
-      background: hsl(var(--primary) / 0.98);
-      border-color: hsl(var(--primary) / 0.45);
-    }
-    .store-badge:active {
-      transform: translateY(0);
-      box-shadow: 0 6px 16px hsl(var(--primary) / 0.2);
-      background: hsl(var(--primary) / 0.94);
-      border-color: hsl(var(--primary) / 0.4);
+    ul {
+      padding-right: 20px;
+      margin: 10px 0;
     }
 
-    .icon {
-      width: 26px;
-      height: 26px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      color: hsl(var(--primary-foreground)); /* white icons on blue */
-      flex: 0 0 26px;
+    a {
+      color: hsl(var(--primary));
+      text-decoration: none;
+      font-weight: 600;
     }
 
-    .badge-text { display: grid; line-height: 1.05; }
-    .badge-eyebrow { font-size: 12px; opacity: 0.9; }
-    .badge-title { font-size: 18px; font-weight: 800; letter-spacing: 0.005em; }
+    a:hover {
+      text-decoration: underline;
+    }
 
-    @media (max-width: 520px) {
-      .container { padding: 20px; border-radius: 16px; }
-      .store-badge { width: 100%; justify-content: center; }
+    .date {
+      opacity: 0.75;
+      text-align: center;
+      margin-bottom: 24px;
+      font-size: 16px;
     }
   </style>
 </head>
+
 <body>
-  <div class="page">
-    <main class="container" role="main">
-      <header class="header">
-        <div class="logo">
-          <img src="https://dardashe.co.il/app_logo.png" alt="לוגו דרדשה" />
-        </div>
-        <h1 class="title">דרדשה - ערבית מדוברת</h1>
-      </header>
+<div class="page">
+  <main class="container">
+    
+    <h1>מדיניות פרטיות</h1>
+    <div class="date">עודכן לאחרונה: 31/10/2025</div>
 
-      <section class="hero" aria-label="הורדות לאפליקציה">
-        <div class="store-badges">
-          <div class="store-badge" aria-label="App Store">
-            <span class="icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor">
-                <path d="M16.365 1.43c0 1.14-.456 2.215-1.203 3.02-.77.83-1.978 1.47-3.085 1.384-.137-1.09.48-2.247 1.227-3.05C14.07 1.88 15.31 1.2 16.365 1.43zM20.5 17.08c-.57 1.31-1.255 2.6-2.26 3.97-1.06 1.44-2.13 2.88-3.86 2.91-1.7.03-2.246-.94-4.18-.94-1.935 0-2.52.91-4.2.97-1.71.06-3.005-1.55-4.07-2.99C.97 19.63-.19 16.16.7 13.28c.5-1.62 1.56-3.07 2.9-3.91 1.29-.81 2.97-.96 4.58-.63.53.11 1.08.3 1.62.3.52 0 1.06-.18 1.62-.3 1.58-.33 3.18-.18 4.46.61.66.41 1.17.92 1.58 1.53-1.86 1.11-2.78 3.49-2.1 5.62.62 1.95 2.28 3.3 4.02 3.56z"/>
-              </svg>
-            </span>
-            <span class="badge-text">
-              <span class="badge-eyebrow">זמין בקרוב</span>
-              <span class="badge-title">App Store</span>
-            </span>
-          </div>
+    <p>אנו ב<strong>דרדשה</strong> מכבדים את פרטיות המשתמשים שלנו ומתחייבים לשמור על המידע האישי שלהם. מסמך זה מפרט אילו נתונים נאספים, כיצד אנו משתמשים בהם, ומהן זכויות המשתמש.</p>
 
-          <div class="store-badge" aria-label="Google Play">
-            <span class="icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor">
-                <path d="M3.5 4.8c0-.9.98-1.46 1.76-.98l13.3 7.7c.8.46.8 1.6 0 2.06L5.26 21.3c-.78.46-1.76-.09-1.76-.98V4.8z"/>
-              </svg>
-            </span>
-            <span class="badge-text">
-              <span class="badge-eyebrow">זמין בקרוב</span>
-              <span class="badge-title">Google Play</span>
-            </span>
-          </div>
-        </div>
-      </section>
-    </main>
-  </div>
+    <h2>איזה מידע אנו אוספים?</h2>
+    <ul>
+      <li><strong>כתובת אימייל</strong> — לצורך יצירת חשבון והתחברות.</li>
+      <li><strong>Push Token</strong> — לצורך שליחת תזכורות והתראות.</li>
+      <li>
+        <strong>נתוני שימוש אנונימיים</strong> — סטטיסטיקות שימוש באפליקציה (לדוגמה: שיעורים שהושלמו, תדירות שימוש, טעויות נפוצות).  
+        הנתונים אינם מזהים משתמשים ומשמשים לשיפור חוויית הלמידה ופיתוח פיצ’רים חדשים.
+      </li>
+    </ul>
+
+    <p><strong>איננו אוספים</strong>:</p>
+    <ul>
+      <li>קבצי אודיו מהמשתמש</li>
+      <li>נתוני מיקום</li>
+      <li>מידע בריאותי או פיננסי</li>
+      <li>מידע רגיש אחר</li>
+    </ul>
+
+    <h2>כיצד אנו משתמשים במידע?</h2>
+    <ul>
+      <li>ניהול חשבון והתחברות</li>
+      <li>שליחת תזכורות ושימור רצף לימוד</li>
+      <li>שיפור ביצועי האפליקציה וחוויית המשתמש</li>
+    </ul>
+
+    <h2>שיתוף מידע</h2>
+    <p>איננו מוכרים מידע אישי לצד שלישי.</p>
+    <p>אנו משתמשים בשירותים כגון Supabase ו־Expo לצורך אימות, אחסון נתונים וניתוח שימוש. שירותים אלה פועלים בהתאם לתקני אבטחה ומדיניות פרטיות מחמירים.</p>
+
+    <h2>שמירת מידע</h2>
+    <p>המידע נשמר כל עוד החשבון פעיל.</p>
+
+    <h2>זכויות המשתמש</h2>
+    <p>המשתמש רשאי לבקש:</p>
+    <ul>
+      <li>גישה לנתונים שלו</li>
+      <li>תיקון פרטים</li>
+      <li>מחיקת חשבונו וכל המידע הקשור אליו</li>
+    </ul>
+
+    <p>לבקשות: <a href="mailto:support@dardashe.co.il">support@dardashe.co.il</a></p>
+
+    <h2>אבטחה</h2>
+    <p>נתונים מוגנים באמצעות הצפנה, בקרות גישה ותשתית מאובטחת בהתאם לסטנדרטים בינלאומיים.</p>
+
+    <h2>שינויים במדיניות</h2>
+    <p>ייתכנו עדכונים למדיניות זו. במקרה של שינוי מהותי תפורסם הודעה.</p>
+
+    <h2>יצירת קשר</h2>
+    <p>לשאלות ופניות: <a href="mailto:support@dardashe.co.il">support@dardashe.co.il</a></p>
+
+  </main>
+</div>
 </body>
 </html>
