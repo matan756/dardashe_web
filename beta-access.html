@@ -131,10 +131,10 @@
       <div class="logo">
         <img src="https://dardashe.co.il/app_logo.png" alt="לוגו דרדשה">
       </div>
-      <h1>בקשת הצטרפות לדרדשה - אפליקציה ללימוד ערבית מדוברת</h1>
-      <p>נשמח להעניק לכם לגישה מוקדמת לאפליקציה!<br>
-      הזינו בבקשה כתובת מייל ונשלח לכם קישור להורדה <br><br>
-      <strong style="display:block;">חשוב:</strong> יש להזין את אותה כתובת המייל שבאמצעותה אתם מחוברים לחנות האפליקציות.
+      <h1>בקשת הצטרפות לדַרְדַשֶה - אפליקציה ללימוד ערבית מדוברת</h1>
+      <p>נשמח להעניק לכם גישה מוקדמת לאפליקציה!<br>
+      הזינו בבקשה את כתובת המייל שלכם ונשלח לכם קישור להורדה.<br><br>
+      <strong style="display:block;">שימו לב:</strong> יש להזין את כתובת המייל שבאמצעותה אתם מחוברים לחנות האפליקציות.
 
       <form id="betaForm">
         <div>
@@ -143,13 +143,13 @@
         </div>
 
         <div>
-          <label for="email">אימייל *</label>
+          <label for="email">כתובת מייל*</label>
           <input type="email" id="email" name="email" required placeholder="example@gmail.com">
         </div>
 
         <div class="checkbox">
           <input type="checkbox" id="consent" name="consent" required>
-          <label for="consent">אני מאשר/ת להשתמש באימייל שלי כדי לשלוח לי הזמנה לגרסת הבטא של דרדשה.</label>
+          <label for="consent">אני מאשר/ת להשתמש בכתובת המייל שלי על מנת לשלוח קישור להורדת האפליקציה</label>
         </div>
 
         <button type="submit">שליחה</button>
@@ -185,7 +185,7 @@
         if (error) throw error
 
         form.reset()
-        messageDiv.textContent = 'תודה! נשלח לך קישור להורדת האפליקציה תוך 24 שעות .'
+        messageDiv.textContent = 'תודה! תוך מספר שעות יתקבל קישור לכתובת המייל שהזנת'
         messageDiv.className = 'success'
       } catch (err) {
         messageDiv.textContent = '❌ שגיאה בשליחה, יש לנסות שוב. אם השגיאה ממשיכה, פנו אלינו בבקשה לכתובת המייל: support@dardashe.co.il'
