@@ -131,10 +131,10 @@
       <div class="logo">
         <img src="https://dardashe.co.il/app_logo.png" alt="לוגו דרדשה">
       </div>
-      <h1>הצטרפות לדרדשה - גרסת בטא</h1>
-      <p>אנחנו שמחים להזמין אתכם לגישה מוקדמת לאפליקציה!<br>
-      מלאו את כתובת המייל שלך כדי שנוכל לשלוח לך הזמנה אישית.<br>
-      <strong>חשוב:</strong> אם יש לך מכשיר אנדרואיד, הזן/י את כתובת ה־Gmail שלך שבה את/ה משתמש/ת בחנות Play.</p>
+      <h1>בקשת הצטרפות לדרדשה - גרסת בטא</h1>
+      <p>נשמח להעניק לכם לגישה מוקדמת לאפליקציה<br>
+      מלאו את כתובת המייל ונשלח לכם <br>
+      <strong>חשוב:</strong>יש להזין את אותה כתובת המייל שבאמצעותה נרשתמם לחנות האפליקציות.</p>
 
       <form id="betaForm">
         <div>
@@ -185,10 +185,10 @@
         if (error) throw error
 
         form.reset()
-        messageDiv.textContent = '✅ תודה! נשלח אליך מייל .'
+        messageDiv.textContent = 'תודה! נשלח לך קישור להורדת האפליקציה תוך 24 שעות .'
         messageDiv.className = 'success'
       } catch (err) {
-        messageDiv.textContent = '❌ שגיאה בשליחה, אנא נסה/י שוב.'
+        messageDiv.textContent = '❌ שגיאה בשליחה, יש לנסות שוב. אם השגיאה ממשיכה, פנו אלינו בבקשה לכתובת המייל: support@dardashe.co.il'
         messageDiv.className = 'error'
         console.error(err)
       }
