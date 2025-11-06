@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests; block-all-mixed-content">
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>דרדשה - הרשמה לגרסת בטא</title>
+  <style>
+    /* ✅ Use your Dardashe color palette and layout */
+    :root {
+      --background: 0 0% 100%;
+      --foreground: 0 0% 0%;
+      --card: 0 0% 100%;
+      --card-foreground: 0 0% 0%;
+      --primary: 196 100% 30%;
+      --primary-foreground: 0 0% 100%;
+      --secondary: 194 100% 94%;
+      --gray: 203 12% 87%;
+      --font-body: "Rubik", system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: linear-gradient(to bottom, hsl(194 73% 65%), hsl(194 73% 90%));
+      font-family: var(--font-body);
+      color: hsl(var(--foreground));
+    }
+
+    .page {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      box-sizing: border-box;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 640px;
+      background: hsl(var(--card));
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow:
+        0 0 0 2px hsl(var(--primary)),
+        0 10px 30px hsl(var(--primary) / 0.08);
+      text-align: center;
+    }
+
+    .logo img {
+      height: clamp(120px, 20vw, 200px);
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      color: hsl(var(--primary));
+      font-size: clamp(28px, 5vw, 42px);
+      margin: 8px 0 16px;
+    }
+
+    p {
+      font-size: 18px;
+      color: #333;
+      margin-bottom: 24px;
+    }
+
+    form {
+      display: grid;
+      gap: 18px;
+      text-align: right;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    input[type="text"],
+    input[type="email"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid hsl(var(--primary) / 0.3);
+      border-radius: 10px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    .checkbox {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+    }
+
+    button {
+      background: hsl(var(--primary));
+      color: hsl(var(--primary-foreground));
+      font-size: 18px;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 20px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    button:hover {
+      background: hsl(var(--primary) / 0.9);
+      transform: translateY(-1px);
+    }
+
+    .success, .error {
+      margin-top: 12px;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .success { color: hsl(142 70% 40%); }
+    .error { color: hsl(0 84.2% 60.2%); }
+
+    @media (max-width: 520px) {
+      .container { padding: 24px; border-radius: 16px; }
+      p { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <main class="container">
+      <div class="logo">
+        <img src="https://dardashe.co.il/app_logo.png" alt="לוגו דרדשה">
+      </div>
+      <h1>הצטרפות לדרדשה - גרסת בטא</h1>
+      <p>אנחנו שמחים להזמין אתכם לגישה מוקדמת לאפליקציה!<br>
+      מלאו את כתובת המייל שלך כדי שנוכל לשלוח לך הזמנה אישית.<br>
+      <strong>חשוב:</strong> אם יש לך מכשיר אנדרואיד, הזן/י את כתובת ה־Gmail שלך שבה את/ה משתמש/ת בחנות Play.</p>
+
+      <form id="betaForm">
+        <div>
+          <label for="full_name">שם (לא חובה)</label>
+          <input type="text" id="full_name" name="full_name" placeholder="השם שלך">
+        </div>
+
+        <div>
+          <label for="email">אימייל *</label>
+          <input type="email" id="email" name="email" required placeholder="example@gmail.com">
+        </div>
+
+        <div class="checkbox">
+          <input type="checkbox" id="consent" name="consent" required>
+          <label for="consent">אני מאשר/ת להשתמש באימייל שלי כדי לשלוח לי הזמנה לגרסת הבטא של דרדשה.</label>
+        </div>
+
+        <button type="submit">שליחה</button>
+        <div id="message"></div>
+      </form>
+    </main>
+  </div>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/esm/index.js'
+
+    // ⚙️ Replace with your own keys
+    const supabaseUrl = 'https://YOUR_PROJECT_ID.supabase.co'
+    const supabaseKey = 'YOUR_ANON_KEY'
+    const supabase = createClient(supabaseUrl, supabaseKey)
+
+    const form = document.getElementById('betaForm')
+    const messageDiv = document.getElementById('message')
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault()
+      messageDiv.textContent = ''
+
+      const full_name = form.full_name.value.trim() || null
+      const email = form.email.value.trim()
+      const consent = form.consent.checked
+
+      try {
+        const { error } = await supabase.from('beta_signups').insert([
+          { full_name, email, consent, source: 'exchange_program' }
+        ])
+
+        if (error) throw error
+
+        form.reset()
+        messageDiv.textContent = '✅ תודה! נשלח אליך מייל .'
+        messageDiv.className = 'success'
+      } catch (err) {
+        messageDiv.textContent = '❌ שגיאה בשליחה, אנא נסה/י שוב.'
+        messageDiv.className = 'error'
+        console.error(err)
+      }
+    })
+  </script>
+</body>
+</html>
