@@ -1,6 +1,12 @@
 <!doctype html>
 <html lang="he" dir="rtl">
 <head>
+<script>
+  const p = window.location.pathname;
+  if (p === "" || p === "/" || p === "/index.html") {
+    window.location.replace("/beta-access");
+  }
+</script>
   <meta charset="utf-8" />
   <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests; block-all-mixed-content">
   <meta name="viewport" content="width=device-width,initial-scale=1" />
