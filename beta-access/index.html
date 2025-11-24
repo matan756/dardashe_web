@@ -13,6 +13,7 @@
 
   <title>דרדשה – הרשמה לגרסת בטא</title>
 
+  <!-- CSS must load AFTER the OG tags -->
   <link rel="stylesheet" href="style.css" />
 </head>
 
@@ -77,11 +78,11 @@
       try {
         const { error } = await supabase.from('beta_signups').insert([
           { 
-            full_name,
+            full_name, 
             phone_number,
-            email,
-            consent,
-            source: 'exchange_program'
+            email, 
+            consent, 
+            source: 'exchange_program' 
           }
         ])
 
