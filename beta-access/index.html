@@ -35,7 +35,7 @@
 
         <!-- ✅ PHONE NUMBER FIELD -->
         <div>
-          <label for="phone_number">מספר טלפון (לקבלת קישור ב-SMS)</label>
+          <label for="phone_number">מספר טלפון, לקבלת קישור ב-SMS (לא חובה)</label>
           <input type="text" id="phone_number" name="phone_number">
         </div>
 
@@ -88,7 +88,7 @@
         if (error) throw error
 
         form.reset()
-        messageDiv.textContent = 'תודה! תוך 24 שעות יתקבל קישור לכתובת המייל שהזנת.'
+        messageDiv.textContent = 'תודה! תוך 24 שעות יתקבל קישור לכתובת המייל או למספר הטלפון שהזנת.'
         messageDiv.className = 'success'
       } catch (err) {
         messageDiv.textContent = '❌ שגיאה בשליחה, יש לנסות שוב. אם השגיאה ממשיכה, פנו אלינו בבקשה לכתובת המייל: support@dardashe.co.il'
