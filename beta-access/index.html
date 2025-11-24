@@ -34,6 +34,16 @@
           <input type="text" id="full_name" name="full_name" placeholder="השם שלך">
         </div>
 
+        <!-- ✅ NEW PHONE NUMBER FIELD -->
+        <div>
+          <label for="phone_number">מספר טלפון (לקבלת קישור ב-SMS)</label>
+          <input
+            type="tel"
+            id="phone_number"
+            name="phone_number"
+            placeholder="05XXXXXXXX או +972XXXXXXXXX">
+        </div>
+
         <div>
           <label for="email">כתובת מייל*</label>
           <input type="email" id="email" name="email" required placeholder="example@gmail.com">
@@ -57,7 +67,6 @@
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndxZ253Y2x1b2Rtd3N6Z2p0b25hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM3NzkwMTUsImV4cCI6MjA1OTM1NTAxNX0.IHAdNJNTOvymdlrn9ZpS50US46HgiKkn6r6j7otOTDs'
     const supabase = createClient(supabaseUrl, supabaseKey)
 
-
     const form = document.getElementById('betaForm')
     const messageDiv = document.getElementById('message')
 
@@ -66,12 +75,19 @@
       messageDiv.textContent = ''
 
       const full_name = form.full_name.value.trim() || null
+      const phone_number = form.phone_number.value.trim() || null
       const email = form.email.value.trim()
       const consent = form.consent.checked
 
       try {
         const { error } = await supabase.from('beta_signups').insert([
-          { full_name, email, consent, source: 'exchange_program' }
+          { 
+            full_name, 
+            phone_number,
+            email, 
+            consent, 
+            source: 'exchange_program' 
+          }
         ])
 
         if (error) throw error
