@@ -35,7 +35,7 @@
 
         <!-- ✅ PHONE NUMBER FIELD -->
         <div>
-          <label for="phone_number">מספר טלפון, לקבלת קישור ב-SMS (לא חובה)</label>
+          <label for="phone_number">מספר טלפון (לקבלת קישור ב-SMS)</label>
           <input type="text" id="phone_number" name="phone_number">
         </div>
 
@@ -46,7 +46,7 @@
 
         <div class="checkbox">
           <input type="checkbox" id="consent" name="consent" required>
-          <label for="consent">אני מאשר/ת להשתמש בפרטים שהזנתי על מנת לשלוח קישור להורדת האפליקציה.</label>
+          <label for="consent">אני מאשר/ת להשתמש בכתובת המייל שלי על מנת לשלוח קישור להורדת האפליקציה.</label>
         </div>
 
         <button type="submit">שליחה</button>
@@ -88,14 +88,7 @@
         if (error) throw error
 
         form.reset()
-
-        // ✅ Conditional success message based on phone number
-        if (phone_number) {
-          messageDiv.textContent = 'תודה! תוך 24 שעות יתקבל קישור למספר הטלפון שהזנת.'
-        } else {
-          messageDiv.textContent = 'תודה! תוך 24 שעות יתקבל קישור לכתובת המייל שהזנת.'
-        }
-
+        messageDiv.textContent = 'תודה! תוך 24 שעות יתקבל קישור לכתובת המייל שהזנת.'
         messageDiv.className = 'success'
       } catch (err) {
         messageDiv.textContent = 'שגיאה בשליחה, יש לנסות שוב. אם השגיאה ממשיכה, פנו אלינו בבקשה לכתובת המייל: support@dardashe.co.il'
