@@ -5,16 +5,18 @@
 
   <!-- ✅ PRODUCTION-READY CSP — WORKS ON ANDROID, iOS, DESKTOP -->
   <meta http-equiv="Content-Security-Policy"
-        content="
-          default-src 'self';
-          script-src 'self' https://cdn.jsdelivr.net 'unsafe-inline';
-          style-src 'self' 'unsafe-inline';
-          img-src 'self' https://auth.dardashe.co.il https://dardashe.co.il data:;
-          connect-src 
-            https://wqgnwcluodmwszgjtona.supabase.co 
-            https://wqgnwcluodmwszgjtona.supabase.co/* 
-            wss://wqgnwcluodmwszgjtona.supabase.co;
-        ">
+      content="
+        default-src 'self';
+        script-src 'self' https://cdn.jsdelivr.net 'unsafe-inline';
+        style-src 'self' 'unsafe-inline';
+        img-src 'self' https://auth.dardashe.co.il https://dardashe.co.il data:;
+        connect-src 
+          https://wqgnwcluodmwszgjtona.supabase.co 
+          https://wqgnwcluodmwszgjtona.supabase.co/* 
+          wss://wqgnwcluodmwszgjtona.supabase.co
+          https://cdn.jsdelivr.net 
+          https://cdn.jsdelivr.net/*;
+      ">
 
   <meta name="viewport" content="width=device-width,initial-scale=1" />
 
