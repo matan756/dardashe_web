@@ -3,14 +3,17 @@
 <head>
   <meta charset="utf-8" />
 
-  <!-- ✅ FIXED CSP: allows Supabase + jsdelivr and prevents CORS block -->
+  <!-- ✅ PRODUCTION-READY CSP — WORKS ON ANDROID, iOS, DESKTOP -->
   <meta http-equiv="Content-Security-Policy"
         content="
           default-src 'self';
           script-src 'self' https://cdn.jsdelivr.net 'unsafe-inline';
-          connect-src https://wqgnwcluodmwszgjtona.supabase.co;
-          img-src 'self' https://auth.dardashe.co.il https://dardashe.co.il data:;
           style-src 'self' 'unsafe-inline';
+          img-src 'self' https://auth.dardashe.co.il https://dardashe.co.il data:;
+          connect-src 
+            https://wqgnwcluodmwszgjtona.supabase.co 
+            https://wqgnwcluodmwszgjtona.supabase.co/* 
+            wss://wqgnwcluodmwszgjtona.supabase.co;
         ">
 
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -29,14 +32,21 @@
 <body>
   <div class="page">
     <main class="container">
+
       <div class="logo">
         <img src="https://dardashe.co.il/app_logo.png" alt="לוגו דרדשה">
       </div>
-      <h1>בקשת הצטרפות לדַרְדַשֶה – אפליקציה ללימוד ערבית מדוברת</h1>
-      <p>נשמח להעניק לכם גישה לגרסת הבטא של האפליקציה!<br>
-      הזינו בבקשה את כתובת המייל שלכם ונשלח לכם קישור להורדה.<br><br>
-      <strong style="display:block;">משתמשי אנדרואיד – שימו לב:</strong> יש להזין את כתובת המייל שבאמצעותה אתם מחוברים לחנות האפליקציות.</p>
 
+      <h1>בקשת הצטרפות לדַרְדַשֶה – אפליקציה ללימוד ערבית מדוברת</h1>
+
+      <p>
+        נשמח להעניק לכם גישה לגרסת הבטא של האפליקציה!<br>
+        הזינו בבקשה את כתובת המייל שלכם ונשלח לכם קישור להורדה.<br><br>
+        <strong style="display:block;">משתמשי אנדרואיד – שימו לב:</strong>
+        יש להזין את כתובת המייל שבאמצעותה אתם מחוברים לחנות האפליקציות.
+      </p>
+
+      <!-- FORM -->
       <form id="betaForm">
         <div>
           <label for="full_name">שם (לא חובה)</label>
@@ -61,59 +71,63 @@
         <button type="submit">שליחה</button>
         <div id="message"></div>
       </form>
+
     </main>
   </div>
 
+  <!-- SCRIPT (MODULE) -->
   <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
-    const supabaseUrl = 'https://wqgnwcluodmwszgjtona.supabase.co'
-    const supabaseKey = 'sb_publishable_fNMgEK319mUQHpRTVjgtzg_Hymx2to6'
-    const supabase = createClient(supabaseUrl, supabaseKey)
+    const supabaseUrl = 'https://wqgnwcluodmwszgjtona.supabase.co';
+    const supabaseKey = 'sb_publishable_fNMgEK319mUQHpRTVjgtzg_Hymx2to6';
+    const supabase = createClient(supabaseUrl, supabaseKey);
 
-    const form = document.getElementById('betaForm')
-    const messageDiv = document.getElementById('message')
+    const form = document.getElementById('betaForm');
+    const messageDiv = document.getElementById('message');
 
     form.addEventListener('submit', async (e) => {
-      e.preventDefault()
-      messageDiv.textContent = ''
+      e.preventDefault();
+      messageDiv.textContent = '';
+      messageDiv.className = '';
 
-      const full_name = form.full_name.value.trim() || null
-      const phone_number = form.phone_number.value.trim() || null
-      const email = form.email.value.trim()
-      const consent = form.consent.checked
+      const full_name = form.full_name.value.trim() || null;
+      const phone_number = form.phone_number.value.trim() || null;
+      const email = form.email.value.trim();
+      const consent = form.consent.checked;
+
+      // Prevent double-clicks
+      form.querySelector('button[type="submit"]').disabled = true;
 
       try {
         const { error } = await supabase
           .from('beta_signups')
-          .insert([
-            {
-              full_name,
-              phone_number,
-              email,
-              consent,
-              source: 'exchange_program'
-            }
-          ])
+          .insert([{
+            full_name,
+            phone_number,
+            email,
+            consent,
+            source: 'exchange_program'
+          }]);
 
-        if (error) throw error
+        if (error) throw error;
 
-        form.reset()
-
-        if (phone_number) {
-          messageDiv.textContent = 'תודה! תוך 24 שעות יתקבל קישור למספר הטלפון שהזנת.'
-        } else {
-          messageDiv.textContent = 'תודה! תוך 24 שעות יתקבל קישור לכתובת המייל שהזנת.'
-        }
-
-        messageDiv.className = 'success'
+        form.reset();
+        messageDiv.className = 'success';
+        messageDiv.textContent = phone_number
+          ? 'תודה! תוך 24 שעות יתקבל קישור למספר הטלפון שהזנת.'
+          : 'תודה! תוך 24 שעות יתקבל קישור לכתובת המייל שהזנת.';
 
       } catch (err) {
-        messageDiv.textContent = 'שגיאה בשליחה, יש לנסות שוב. אם השגיאה ממשיכה, פנו אלינו בבקשה לכתובת המייל: support@dardashe.co.il'
-        messageDiv.className = 'error'
-        console.error('Supabase error:', err)
+        console.error('Supabase error:', err);
+        messageDiv.className = 'error';
+        messageDiv.textContent =
+          'שגיאה בשליחה, יש לנסות שוב. אם הבעיה ממשיכה, פנו אלינו ל-support@dardashe.co.il';
+      } finally {
+        form.querySelector('button[type="submit"]').disabled = false;
       }
-    })
+    });
   </script>
+
 </body>
 </html>
