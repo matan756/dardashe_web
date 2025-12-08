@@ -3,18 +3,19 @@
 <head>
   <meta charset="utf-8" />
 
-  <!-- ✔ Production-ready CSP for UMD Supabase -->
+  <!-- ✔ ANDROID-SAFE CSP -->
   <meta http-equiv="Content-Security-Policy"
         content="
           default-src 'self';
-          script-src 'self' https://cdn.jsdelivr.net 'unsafe-inline';
+          script-src 'self' https://cdn.jsdelivr.net 'unsafe-inline' 'unsafe-eval';
           style-src 'self' 'unsafe-inline';
-          img-src 'self' https://auth.dardashe.co.il https://dardashe.co.il data:;
-          connect-src 
-            'self'
-            https://wqgnwcluodmwszgjtona.supabase.co
-            https://wqgnwcluodmwszgjtona.supabase.co/*
-            wss://wqgnwcluodmwszgjtona.supabase.co;
+          img-src 'self' data: https://dardashe.co.il https://auth.dardashe.co.il;
+          connect-src 'self'
+                       https://wqgnwcluodmwszgjtona.supabase.co
+                       https://wqgnwcluodmwszgjtona.supabase.co/*
+                       wss://wqgnwcluodmwszgjtona.supabase.co
+                       https://cdn.jsdelivr.net
+                       https://cdn.jsdelivr.net/*;
         ">
 
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -36,7 +37,9 @@
       <div class="logo">
         <img src="https://dardashe.co.il/app_logo.png" alt="לוגו דרדשה">
       </div>
+
       <h1>בקשת הצטרפות לדַרְדַשֶה – אפליקציה ללימוד ערבית מדוברת</h1>
+
       <p>
         נשמח להעניק לכם גישה לגרסת הבטא של האפליקציה!<br>
         הזינו בבקשה את כתובת המייל שלכם ונשלח לכם קישור להורדה.<br><br>
@@ -44,6 +47,7 @@
         יש להזין את כתובת המייל שבאמצעותה אתם מחוברים לחנות האפליקציות.
       </p>
 
+      <!-- FORM -->
       <form id="betaForm">
         <div>
           <label for="full_name">שם (לא חובה)</label>
@@ -71,9 +75,10 @@
     </main>
   </div>
 
-  <!-- ✔ Use UMD Supabase bundle (NOT ESM) -->
+  <!-- ✔ UMD SUPABASE — ANDROID SAFE -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.js"></script>
 
+  <!-- ✔ MAIN SCRIPT -->
   <script>
   document.addEventListener("DOMContentLoaded", () => {
 
@@ -106,8 +111,8 @@
               phone_number,
               email,
               consent,
-              source: "exchange_program",
-            },
+              source: "exchange_program"
+            }
           ]);
 
         if (error) throw error;
@@ -117,6 +122,7 @@
         messageDiv.textContent = phone_number
           ? "תודה! תוך 24 שעות יתקבל קישור למספר הטלפון שהזנת."
           : "תודה! תוך 24 שעות יתקבל קישור לכתובת המייל שהזנת.";
+
       } catch (err) {
         console.error("Supabase error:", err);
         messageDiv.className = "error";
