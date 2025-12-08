@@ -1,134 +1,52 @@
-<!doctype html>
-<html lang="he" dir="rtl">
-<head>
-  <meta charset="utf-8" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.js"></script>
+<script>
+  const supabase = window.supabase.createClient(
+    'https://wqgnwcluodmwszgjtona.supabase.co',
+    'sb_publishable_fNMgEK319mUQHpRTVjgtzg_Hymx2to6'
+  );
 
-  <meta http-equiv="Content-Security-Policy"
-      content="
-        default-src 'self';
-        script-src 'self' https://cdn.jsdelivr.net 'unsafe-inline';
-        style-src 'self' 'unsafe-inline';
-        img-src 'self' https://auth.dardashe.co.il https://dardashe.co.il data:;
-        connect-src 'self'
-                     https://wqgnwcluodmwszgjtona.supabase.co
-                     https://wqgnwcluodmwszgjtona.supabase.co/*
-                     wss://wqgnwcluodmwszgjtona.supabase.co
-                     https://cdn.jsdelivr.net
-                     https://cdn.jsdelivr.net/*;
-      ">
+  const form = document.getElementById('betaForm');
+  const messageDiv = document.getElementById('message');
 
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    messageDiv.textContent = '';
+    messageDiv.className = '';
 
-  <!-- Open Graph -->
-  <meta property="og:url" content="https://dardashe.co.il/beta-access" />
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="דרדשה – אפליקציה ללימוד ערבית מדוברת" />
-  <meta property="og:image" content="https://auth.dardashe.co.il/storage/v1/object/public/content/app_logos/app_logo.png" />
+    const full_name = form.full_name.value.trim() || null;
+    const phone_number = form.phone_number.value.trim() || null;
+    const email = form.email.value.trim();
+    const consent = form.consent.checked;
 
-  <title>דרדשה – הרשמה לגרסת בטא</title>
+    // Prevent double-clicks
+    form.querySelector('button[type="submit"]').disabled = true;
 
-  <link rel="stylesheet" href="style.css" />
-</head>
+    try {
+      const { error } = await supabase
+        .from('beta_signups')
+        .insert([{
+          full_name,
+          phone_number,
+          email,
+          consent,
+          source: 'exchange_program'
+        }]);
 
-<body>
-  <div class="page">
-    <main class="container">
+      if (error) throw error;
 
-      <div class="logo">
-        <img src="https://dardashe.co.il/app_logo.png" alt="לוגו דרדשה">
-      </div>
+      form.reset();
+      messageDiv.className = 'success';
+      messageDiv.textContent = phone_number
+        ? 'תודה! תוך 24 שעות יתקבל קישור למספר הטלפון שהזנת.'
+        : 'תודה! תוך 24 שעות יתקבל קישור לכתובת המייל שהזנת.';
 
-      <h1>בקשת הצטרפות לדַרְדַשֶה – אפליקציה ללימוד ערבית מדוברת</h1>
-
-      <p>
-        נשמח להעניק לכם גישה לגרסת הבטא של האפליקציה!<br>
-        הזינו בבקשה את כתובת המייל שלכם ונשלח לכם קישור להורדה.<br><br>
-        <strong style="display:block;">משתמשי אנדרואיד – שימו לב:</strong>
-        יש להזין את כתובת המייל שבאמצעותה אתם מחוברים לחנות האפליקציות.
-      </p>
-
-      <!-- FORM -->
-      <form id="betaForm">
-        <div>
-          <label for="full_name">שם (לא חובה)</label>
-          <input type="text" id="full_name" name="full_name">
-        </div>
-
-        <div>
-          <label for="phone_number">מספר טלפון, לקבלת קישור ב-SMS (לא חובה)</label>
-          <input type="text" id="phone_number" name="phone_number">
-        </div>
-
-        <div>
-          <label for="email">כתובת מייל*</label>
-          <input type="email" id="email" name="email" required>
-        </div>
-
-        <div class="checkbox">
-          <input type="checkbox" id="consent" name="consent" required>
-          <label for="consent">אני מאשר/ת להשתמש בפרטים שהזנתי על מנת לשלוח קישור להורדת האפליקציה.</label>
-        </div>
-
-        <button type="submit">שליחה</button>
-        <div id="message"></div>
-      </form>
-
-    </main>
-  </div>
-
-  <!-- SCRIPT (MODULE) -->
-  <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
-
-    const supabaseUrl = 'https://wqgnwcluodmwszgjtona.supabase.co';
-    const supabaseKey = 'sb_publishable_fNMgEK319mUQHpRTVjgtzg_Hymx2to6';
-    const supabase = createClient(supabaseUrl, supabaseKey);
-
-    const form = document.getElementById('betaForm');
-    const messageDiv = document.getElementById('message');
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      messageDiv.textContent = '';
-      messageDiv.className = '';
-
-      const full_name = form.full_name.value.trim() || null;
-      const phone_number = form.phone_number.value.trim() || null;
-      const email = form.email.value.trim();
-      const consent = form.consent.checked;
-
-      // Prevent double-clicks
-      form.querySelector('button[type="submit"]').disabled = true;
-
-      try {
-        const { error } = await supabase
-          .from('beta_signups')
-          .insert([{
-            full_name,
-            phone_number,
-            email,
-            consent,
-            source: 'exchange_program'
-          }]);
-
-        if (error) throw error;
-
-        form.reset();
-        messageDiv.className = 'success';
-        messageDiv.textContent = phone_number
-          ? 'תודה! תוך 24 שעות יתקבל קישור למספר הטלפון שהזנת.'
-          : 'תודה! תוך 24 שעות יתקבל קישור לכתובת המייל שהזנת.';
-
-      } catch (err) {
-        console.error('Supabase error:', err);
-        messageDiv.className = 'error';
-        messageDiv.textContent =
-          'שגיאה בשליחה, יש לנסות שוב. אם הבעיה ממשיכה, פנו אלינו ל-support@dardashe.co.il';
-      } finally {
-        form.querySelector('button[type="submit"]').disabled = false;
-      }
-    });
-  </script>
-
-</body>
-</html>
+    } catch (err) {
+      console.error('Supabase error:', err);
+      messageDiv.className = 'error';
+      messageDiv.textContent =
+        'שגיאה בשליחה, יש לנסות שוב. אם הבעיה ממשיכה, פנו אלינו ל-support@dardashe.co.il';
+    } finally {
+      form.querySelector('button[type="submit"]').disabled = false;
+    }
+  });
+</script>
