@@ -1,117 +1,132 @@
-    /* ✅ Use your Dardashe color palette and layout */
-    :root {
-      --background: 0 0% 100%;
-      --foreground: 0 0% 0%;
-      --card: 0 0% 100%;
-      --card-foreground: 0 0% 0%;
-      --primary: 196 100% 30%;
-      --primary-foreground: 0 0% 100%;
-      --secondary: 194 100% 94%;
-      --gray: 203 12% 87%;
-      --font-body: "Rubik", system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-    }
+/* ✅ Use your Dardashe color palette and layout */
+:root {
+  --background: 0 0% 100%;
+  --foreground: 0 0% 0%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 0%;
+  --primary: 196 100% 30%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 194 100% 94%;
+  --gray: 203 12% 87%;
+  --font-body: "Rubik", system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
 
-    html, body {
-      height: 100%;
-      margin: 0;
-      background: linear-gradient(to bottom, hsl(194 73% 65%), hsl(194 73% 90%));
-      font-family: var(--font-body);
-      color: hsl(var(--foreground));
-    }
+html, body {
+  height: 100%;
+  margin: 0;
 
-    .page {
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 24px;
-      box-sizing: border-box;
-    }
+  /* ⭐ FIXED GRADIENT — same style, NO dark blue bottom */
+  background: linear-gradient(
+    to bottom,
+    hsl(194 73% 65%) 0%,
+    hsl(194 73% 82%) 60%,
+    hsl(194 73% 93%) 100%
+  );
 
-    .container {
-      width: 100%;
-      max-width: 640px;
-      background: hsl(var(--card));
-      border-radius: 20px;
-      padding: 32px;
-      box-shadow:
-        0 0 0 2px hsl(var(--primary)),
-        0 10px 30px hsl(var(--primary) / 0.08);
-      text-align: center;
-    }
+  font-family: var(--font-body);
+  color: hsl(var(--foreground));
+}
 
-    .logo img {
-      height: clamp(120px, 20vw, 200px);
-      margin-bottom: 16px;
-    }
+.page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  box-sizing: border-box;
+}
 
-    h1 {
-      color: hsl(var(--primary));
-      font-size: clamp(28px, 5vw, 42px);
-      margin: 8px 0 16px;
-    }
+.container {
+  width: 100%;
+  max-width: 640px;
+  background: hsl(var(--card));
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow:
+    0 0 0 2px hsl(var(--primary)),
+    0 10px 30px hsl(var(--primary) / 0.08);
+  text-align: center;
+}
 
-    p {
-      font-size: 18px;
-      color: #333;
-      margin-bottom: 24px;
-    }
+.logo img {
+  height: clamp(120px, 20vw, 200px);
+  margin-bottom: 16px;
+}
 
-    form {
-      display: grid;
-      gap: 18px;
-      text-align: right;
-    }
+h1 {
+  color: hsl(var(--primary));
+  font-size: clamp(28px, 5vw, 42px);
+  margin: 8px 0 16px;
+}
 
-    label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
+p {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 24px;
+}
 
-    input[type="text"],
-    input[type="email"] {
-      width: 100%;
-      padding: 12px 14px;
-      border: 1.5px solid hsl(var(--primary) / 0.3);
-      border-radius: 10px;
-      font-size: 16px;
-      box-sizing: border-box;
-    }
+form {
+  display: grid;
+  gap: 18px;
+  text-align: right;
+}
 
-    .checkbox {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 14px;
-    }
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
 
-    button {
-      background: hsl(var(--primary));
-      color: hsl(var(--primary-foreground));
-      font-size: 18px;
-      font-weight: 600;
-      border: none;
-      border-radius: 10px;
-      padding: 12px 20px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
+input[type="text"],
+input[type="email"] {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid hsl(var(--primary) / 0.3);
+  border-radius: 10px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
 
-    button:hover {
-      background: hsl(var(--primary) / 0.9);
-      transform: translateY(-1px);
-    }
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
 
-    .success, .error {
-      margin-top: 12px;
-      font-size: 16px;
-      font-weight: 600;
-    }
+button {
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  font-size: 18px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
 
-    .success { color: hsl(142 70% 40%); }
-    .error { color: hsl(0 84.2% 60.2%); }
+button:hover {
+  background: hsl(var(--primary) / 0.9);
+  transform: translateY(-1px);
+}
 
-    @media (max-width: 520px) {
-      .container { padding: 24px; border-radius: 16px; }
-      p { font-size: 16px; }
-    }
+.success,
+.error {
+  margin-top: 12px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.success { color: hsl(142 70% 40%); }
+.error { color: hsl(0 84.2% 60.2%); }
+
+@media (max-width: 520px) {
+  .container {
+    padding: 24px;
+    border-radius: 16px;
+  }
+
+  p {
+    font-size: 16px;
+  }
+}
