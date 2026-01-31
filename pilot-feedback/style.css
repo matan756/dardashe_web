@@ -119,6 +119,18 @@ input[type="email"] {
   font-size: 16px;
 }
 
+textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 12px 14px;
+  border: 1.5px solid hsl(var(--primary) / 0.3);
+  border-radius: 10px;
+  font-size: 16px;
+  font-family: var(--font-body);
+  resize: vertical;
+  background: #fff;
+}
+
 /* ===============================
    Checkbox
    =============================== */
