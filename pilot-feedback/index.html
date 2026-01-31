@@ -3,67 +3,40 @@
 <head>
   <meta charset="utf-8" />
 
-  <!-- ✔ ANDROID-SAFE CSP (no external scripts needed for now) -->
+  <!-- ✔ ANDROID-SAFE CSP -->
   <meta http-equiv="Content-Security-Policy"
         content="
           default-src 'self';
+          script-src 'self' https://cdn.jsdelivr.net 'unsafe-inline' 'unsafe-eval';
           style-src 'self' 'unsafe-inline';
           img-src 'self' data: https://dardashe.co.il https://auth.dardashe.co.il;
+          connect-src 'self'
+                       https://wqgnwcluodmwszgjtona.supabase.co
+                       https://wqgnwcluodmwszgjtona.supabase.co/*
+                       wss://wqgnwcluodmwszgjtona.supabase.co
+                       https://cdn.jsdelivr.net
+                       https://cdn.jsdelivr.net/*;
         ">
 
   <meta name="viewport" content="width=device-width,initial-scale=1" />
 
   <title>דרדשה – שאלון פיילוט</title>
 
-  <!-- Reuse the same stylesheet as your existing page -->
   <link rel="stylesheet" href="style.css" />
 
-  <!-- Small additions to match your style + ensure white answer boxes -->
   <style>
-    .intro {
-      text-align: center;
-      margin-bottom: 18px;
-      line-height: 1.55;
-    }
-
-    .qa {
-      margin-top: 18px;
-    }
-
-    /* White answer boxes */
-    .answer-box {
-      width: 100%;
-      min-height: 120px;
-      resize: vertical;
-      background: #fff;
-      border: 1px solid rgba(0,0,0,0.12);
-      border-radius: 14px;
-      padding: 12px 14px;
-      font-size: 16px;
-      line-height: 1.5;
-      outline: none;
-      box-sizing: border-box;
-    }
-
-    .answer-box:focus {
-      border-color: rgba(0,0,0,0.25);
-    }
-
-    /* Keep spacing consistent with the original page form layout */
-    form .field {
-      margin-bottom: 18px;
-    }
-
-    form label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 600;
-    }
-
-    /* Disabled button look (not activated yet) */
-    button[disabled] {
+    /* Optional: keep disabled button obvious */
+    button:disabled {
       opacity: 0.6;
       cursor: not-allowed;
+      transform: none !important;
+    }
+
+    #message {
+      margin-top: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      text-align: center;
     }
   </style>
 </head>
@@ -72,49 +45,129 @@
   <div class="page">
     <main class="container">
 
-      <!-- Logo (same as your existing page) -->
       <div class="logo">
         <img src="https://dardashe.co.il/app_logo.png" alt="לוגו דרדשה">
       </div>
 
-      <!-- Centered Intro Text -->
-      <div class="intro">
-        <h1>תודה על השתתפותכם בפיילוט של דרדשה!</h1>
-        <p>
-          אנחנו מעוניינים להכווין את פיתוח האפליקציה בהתאם למסקנות שלכם.<br>
-          לכן, נשמח אם תענו על השאלות הבאות:
-        </p>
-      </div>
+      <h1>תודה על השתתפותכם בפיילוט של דרדשה!</h1>
 
-      <!-- FORM (not activated yet) -->
+      <p>
+        אנחנו מעוניינים להכווין את פיתוח האפליקציה בהתאם למסקנות שלכם.<br>
+        לכן, נשמח אם תענו על מספר שאלות, כדי שנוכל לשפר את האפליקציה בצורה המיטבית
+      </p>
+
       <form id="feedbackForm">
 
-        <div class="field qa">
+        <div>
           <label for="q1">מה הייתם רוצים לשפר או לשנות בדרדשה?</label>
-          <textarea class="answer-box" id="q1" name="q1" placeholder="כתבו כאן..."></textarea>
+          <textarea id="q1" name="q1" placeholder="כתבו כאן..."></textarea>
         </div>
 
-        <div class="field qa">
-          <label for="q2">האם יש פיצ'ר / סוג תרגיל שציפיתם למצוא באפליקציה ולא מצאתם? אם כן — מהו?</label>
-          <textarea class="answer-box" id="q2" name="q2" placeholder="כתבו כאן..."></textarea>
+        <div>
+          <label for="q2">האם יש פיצ'ר / סוג תרגיל שציפיתם למצוא באפליקציה ולא מצאתם? אם כן — מה?</label>
+          <textarea id="q2" name="q2" placeholder="כתבו כאן..."></textarea>
         </div>
 
-        <div class="field qa">
+        <div>
           <label for="q3">מה לדעתכם עובד טוב ותרצו שנמשיך לפתח?</label>
-          <textarea class="answer-box" id="q3" name="q3" placeholder="כתבו כאן..."></textarea>
+          <textarea id="q3" name="q3" placeholder="כתבו כאן..."></textarea>
         </div>
 
-        <div class="field qa">
+        <div>
           <label for="q4">הערות נוספות:</label>
-          <textarea class="answer-box" id="q4" name="q4" placeholder="כתבו כאן..."></textarea>
+          <textarea id="q4" name="q4" placeholder="כתבו כאן..."></textarea>
         </div>
 
-        <!-- Submit button (disabled for now) -->
-        <button type="submit" disabled>שליחה</button>
-
+        <button id="submitBtn" type="submit" disabled>שליחה</button>
+        <div id="message"></div>
       </form>
 
     </main>
   </div>
+
+  <!-- ✔ UMD SUPABASE — ANDROID SAFE -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const supabase = window.supabase.createClient(
+        "https://wqgnwcluodmwszgjtona.supabase.co",
+        "sb_publishable_fNMgEK319mUQHpRTVjgtzg_Hymx2to6"
+      );
+
+      const form = document.getElementById("feedbackForm");
+      const submitBtn = document.getElementById("submitBtn");
+      const messageDiv = document.getElementById("message");
+
+      const fields = [
+        document.getElementById("q1"),
+        document.getElementById("q2"),
+        document.getElementById("q3"),
+        document.getElementById("q4"),
+      ];
+
+      function hasAtLeastOneAnswer() {
+        return fields.some(el => (el.value || "").trim().length > 0);
+      }
+
+      function updateButtonState() {
+        submitBtn.disabled = !hasAtLeastOneAnswer();
+      }
+
+      // Enable button only when at least one field has content
+      fields.forEach(el => {
+        el.addEventListener("input", updateButtonState);
+      });
+
+      // initial state
+      updateButtonState();
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        messageDiv.textContent = "";
+        messageDiv.className = "";
+
+        // Guard: must have at least one answer
+        if (!hasAtLeastOneAnswer()) {
+          submitBtn.disabled = true;
+          return;
+        }
+
+        submitBtn.disabled = true;
+
+        const payload = {
+          q1: (fields[0].value || "").trim() || null,
+          q2: (fields[1].value || "").trim() || null,
+          q3: (fields[2].value || "").trim() || null,
+          q4: (fields[3].value || "").trim() || null,
+          source: "pilot-feedback-web",
+        };
+
+        try {
+          const { error } = await supabase
+            .from("pilot_feedback")
+            .insert([payload]);
+
+          if (error) throw error;
+
+          form.reset();
+          updateButtonState();
+
+          messageDiv.className = "success";
+          messageDiv.textContent = "המענה התקבל בהצלחה. תודה על תרומתך לשיפור האפליקציה!";
+
+        } catch (err) {
+          console.error("Supabase error:", err);
+          messageDiv.className = "error";
+          messageDiv.textContent = "שגיאה בשליחה, יש לנסות שוב מאוחר יותר.";
+          updateButtonState(); // re-enable if there is still text
+        } finally {
+          // If form is empty after reset, button stays disabled.
+          // If error and user still has content, updateButtonState will enable.
+        }
+      });
+    });
+  </script>
 </body>
 </html>
