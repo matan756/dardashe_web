@@ -5,108 +5,18 @@
   <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests; block-all-mixed-content">
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>מדיניות פרטיות - דרדשה</title>
-
-  <style>
-    :root {
-      --background: 0 0% 100%;
-      --foreground: 0 0% 0%;
-      --card: 0 0% 100%;
-      --card-foreground: 0 0% 0%;
-      --popover: 0 0% 100%;
-      --popover-foreground: 0 0% 0%;
-      --primary: 196 100% 30%;
-      --primary-foreground: 0 0% 100%;
-      --secondary: 194 100% 94%;
-      --secondary-foreground: 0 0% 0%;
-      --accent: 203 12% 87%;
-      --accent-foreground: 0 0% 0%;
-      --ring: 196 100% 30%;
-      --font-body: "Rubik", system-ui, -apple-system, "Segoe UI", "Helvetica Neue", sans-serif;
-    }
-
-    html, body {
-      height: 100%;
-      margin: 0;
-      background: linear-gradient(to bottom, hsl(194 73% 65%), hsl(194 73% 90%));
-      font-family: var(--font-body);
-      color: hsl(var(--foreground));
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-
-    .page {
-      padding: 24px;
-      display: grid;
-      place-items: center;
-      min-height: 100vh;
-      box-sizing: border-box;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 900px;
-      background: hsl(var(--card));
-      color: hsl(var(--card-foreground));
-      border-radius: 20px;
-      padding: 32px;
-      box-shadow:
-        0 0 0 2px hsl(var(--primary)),
-        0 10px 30px hsl(var(--primary) / 0.08);
-      line-height: 1.75;
-      font-size: 18px;
-    }
-
-    h1 {
-      font-size: clamp(28px, 4.6vw, 42px);
-      margin-top: 0;
-      margin-bottom: 12px;
-      color: hsl(var(--ring));
-      text-align: center;
-      font-weight: 800;
-    }
-
-    h2 {
-      font-size: 22px;
-      margin-top: 28px;
-      margin-bottom: 12px;
-      color: hsl(var(--ring));
-      font-weight: 700;
-    }
-
-    p, li {
-      font-size: 18px;
-    }
-
-    ul {
-      padding-right: 20px;
-      margin: 10px 0;
-    }
-
-    a {
-      color: hsl(var(--primary));
-      text-decoration: none;
-      font-weight: 600;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    .date {
-      opacity: 0.75;
-      text-align: center;
-      margin-bottom: 24px;
-      font-size: 16px;
-    }
-  </style>
+  <link rel="stylesheet" href="/theme.css" />
 </head>
 
 <body>
 <div class="page">
-  <main class="container">
-    
-    <h1>מדיניות פרטיות</h1>
-    <div class="date">עודכן לאחרונה: 04/06/2026</div>
+  <main class="card">
+
+    <header class="brand-header">
+      <img src="/app_logo.png" alt="לוגו דרדשה" />
+      <h1>מדיניות פרטיות</h1>
+    </header>
+    <div class="center"><span class="meta-chip">עודכן לאחרונה: 04/06/2026</span></div>
 
     <p>אנו ב<strong>דרדשה</strong> ("האפליקציה", "השירות", "אנחנו") מכבדים את פרטיותך ומחויבים להגן על המידע האישי שלך. מסמך זה מסביר בשקיפות אילו נתונים אנו אוספים, לשם מה, עם מי הם משותפים, וכיצד תוכל/י לממש את זכויותיך. השימוש בשירות מהווה הסכמה למדיניות זו.</p>
 
@@ -115,10 +25,10 @@
 
     <h2>איזה מידע אנו אוספים?</h2>
     <ul>
-      <li><strong>פרטי חשבון</strong> — כתובת אימייל, ובמקרים של הרשמה באמצעות Google או Apple גם שמך וכן מזהה ההתחברות שמספק הספק. מידע זה נדרש כדי ליצור עבורך חשבון ולאפשר התחברות.</li>
-      <li><strong>מזהה התראות (Push Token)</strong> — נשמר כדי שנוכל לשלוח לך תזכורות והתראות, ורק אם אישרת קבלת התראות.</li>
-      <li><strong>נתוני למידה ושימוש</strong> — לדוגמה: שיעורים שהושלמו, התקדמות, רצף לימוד, תרגולים וטעויות נפוצות. נתונים אלה מקושרים לחשבונך כדי לאפשר מעקב התקדמות אישי ולשפר את חוויית הלמידה.</li>
-      <li><strong>נתונים טכניים בסיסיים</strong> — כגון סוג המכשיר וגרסת האפליקציה, לצורך תקינות, אבטחה ושיפור ביצועים.</li>
+      <li><strong>פרטי חשבון</strong> – כתובת אימייל, ובמקרים של הרשמה באמצעות Google או Apple גם שמך וכן מזהה ההתחברות שמספק הספק. מידע זה נדרש כדי ליצור עבורך חשבון ולאפשר התחברות.</li>
+      <li><strong>מזהה התראות (Push Token)</strong> – נשמר כדי שנוכל לשלוח לך תזכורות והתראות, ורק אם אישרת קבלת התראות.</li>
+      <li><strong>נתוני למידה ושימוש</strong> – לדוגמה: שיעורים שהושלמו, התקדמות, רצף לימוד, תרגולים וטעויות נפוצות. נתונים אלה מקושרים לחשבונך כדי לאפשר מעקב התקדמות אישי ולשפר את חוויית הלמידה.</li>
+      <li><strong>נתונים טכניים בסיסיים</strong> – כגון סוג המכשיר וגרסת האפליקציה, לצורך תקינות, אבטחה ושיפור ביצועים.</li>
     </ul>
 
     <p><strong>איננו אוספים</strong>:</p>
@@ -142,10 +52,10 @@
     <p><strong>איננו מוכרים מידע אישי, ואיננו מעבירים אותו לצדדים שלישיים למטרות שיווק.</strong></p>
     <p>לצורך הפעלת השירות אנו נעזרים בספקי תשתית מהימנים, המעבדים מידע עבורנו בלבד ובהתאם להנחיותינו:</p>
     <ul>
-      <li><strong>Supabase</strong> — אחסון נתונים ואימות משתמשים</li>
-      <li><strong>Expo</strong> — שליחת התראות</li>
-      <li><strong>Google / Apple</strong> — התחברות מאובטחת (כאשר בחרת באפשרות זו)</li>
-      <li><strong>Resend</strong> — טיפול בפניות תמיכה הנשלחות אלינו במייל</li>
+      <li><strong>Supabase</strong> – אחסון נתונים ואימות משתמשים</li>
+      <li><strong>Expo</strong> – שליחת התראות</li>
+      <li><strong>Google / Apple</strong> – התחברות מאובטחת (כאשר בחרת באפשרות זו)</li>
+      <li><strong>Resend</strong> – טיפול בפניות תמיכה הנשלחות אלינו במייל</li>
     </ul>
     <p>חלק מהספקים פועלים מחוץ לישראל; במקרים אלה המידע מועבר בכפוף לאמצעי הגנה מקובלים ולמדיניות הפרטיות שלהם.</p>
 
@@ -163,7 +73,7 @@
     <p>לפנייה: <a href="mailto:support@dardashe.co.il">support@dardashe.co.il</a>. נטפל בבקשתך בתוך זמן סביר. כן עומדת לך הזכות להגיש תלונה לרשות להגנת הפרטיות.</p>
 
     <h2>אבטחת מידע</h2>
-    <p>אנו נוקטים באמצעי אבטחה מקובלים — לרבות הצפנה ובקרות גישה — כדי להגן על המידע. עם זאת, אף שירות מקוון אינו חסין לחלוטין, ולכן איננו יכולים להבטיח אבטחה מוחלטת.</p>
+    <p>אנו נוקטים באמצעי אבטחה מקובלים – לרבות הצפנה ובקרות גישה – כדי להגן על המידע. עם זאת, אף שירות מקוון אינו חסין לחלוטין, ולכן איננו יכולים להבטיח אבטחה מוחלטת.</p>
 
     <h2>קטינים</h2>
     <p>השירות מיועד לקהל הרחב ומתאים לכל הגילאים. אם הינך קטין/ה, השימוש בשירות כפוף להסכמת הורה או אפוטרופוס, בהתאם לדרישות הדין החל.</p>
