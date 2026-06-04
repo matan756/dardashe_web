@@ -87,7 +87,7 @@ body {
   border-radius: var(--radius-card);
   padding: clamp(24px, 4vw, 44px);
   box-shadow: var(--shadow-card);
-  line-height: 1.8;
+  line-height: 1.5;
   font-size: 18px;
 }
 
