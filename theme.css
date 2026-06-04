@@ -124,7 +124,7 @@ h1 {
 h2 {
   font-size: clamp(20px, 2.6vw, 24px);
   font-weight: 700;
-  margin: 32px 0 12px;
+  margin: 28px 0 6px;
   color: hsl(var(--brand-strong));
 }
 
@@ -134,9 +134,19 @@ li {
   color: hsl(var(--text-strong));
 }
 
+p {
+  margin: 10px 0;
+}
+
 ul {
   padding-inline-start: 22px;
-  margin: 10px 0;
+  margin: 6px 0;
+}
+
+/* Pull the first block right under a heading closer to it */
+h2 + p,
+h2 + ul {
+  margin-top: 4px;
 }
 
 li {
